@@ -34,4 +34,13 @@ public class Pista {
     public ListaLigada getListaDeDecolagem() {
         return listaDeDecolagem;
     }
+
+    public Fila pegarMenorFilaAterrissagem(){
+
+        if(filaAterrisagem1.pegarTamanho() > filaAterrisagem2.pegarTamanho()) {
+            return filaAterrisagem2;
+        }
+
+        return filaAterrisagem1;
+    }
 }

@@ -1,5 +1,6 @@
 package org.example.domain;
 
+import org.example.util.Fila;
 import org.example.util.RandomPicker;
 
 import java.util.ArrayList;
@@ -21,9 +22,43 @@ public class Simulador {
         while(i <= 10){
 
             List<Aviao> avioesChegando = criarAvioes();
+            alocarAvioes(avioesChegando);
 
+            i++;
+        }
+    }
+
+    private void alocarAvioes(List<Aviao> avioes){
+
+        var menorFilaPista1 = aeroporto.getPista1().pegarMenorFilaAterrissagem();
+        var menorFilaPista2 = aeroporto.getPista2().pegarMenorFilaAterrissagem();
+
+
+        for(Aviao a: avioes) {
+
+            if(menorFilaPista1.pegarTamanho() >= menorFilaPista2.pegarTamanho()){
+
+                menorFilaPista2.adicionar(a);
+                System.out.println("Aviao nº " + a.getIdAviao() + " está na fila para pista 2");
+
+            } else {
+                menorFilaPista1.adicionar(a);
+                System.out.println("Aviao nº " + a.getIdAviao() + " está na fila para pista 1");
+            }
 
         }
+
+        int tamanhoFila1Pista1 = aeroporto.getPista1().getFilaAterrisagem1().pegarTamanho();
+        int tamanhoFila2Pista1 = aeroporto.getPista1().getFilaAterrisagem2().pegarTamanho();
+        int tamanhoFila1Pista2 = aeroporto.getPista2().getFilaAterrisagem1().pegarTamanho();
+        int tamanhoFila2Pista2 = aeroporto.getPista2().getFilaAterrisagem2().pegarTamanho();
+
+        System.out.println("Pista 1 - Fila 1: " + tamanhoFila1Pista1 + "aviões");
+        System.out.println("Pista 1 - Fila 2: " + tamanhoFila2Pista1 + "aviões");
+        System.out.println("Pista 2 - Fila 1: " + tamanhoFila1Pista2 + "aviões");
+        System.out.println("Pista 2 - Fila 2: " + tamanhoFila2Pista2 + "aviões");
+
+
     }
 
     private List<Aviao> criarAvioes(){
@@ -38,7 +73,7 @@ public class Simulador {
             i++;
             idIterator++;
         }
-
+        System.out.println(avioesChegando.size() + " aviões chegaram." );
         return avioesChegando;
     }
 
