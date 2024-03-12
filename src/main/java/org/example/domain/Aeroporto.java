@@ -1,5 +1,10 @@
 package org.example.domain;
 
+import org.example.util.Fila;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Aeroporto {
 
     private Pista pista1;
@@ -12,6 +17,7 @@ public class Aeroporto {
         this.pista1 = pista1;
         this.pista2 = pista2;
         this.pistaEmergencia = pistaEmergencia;
+
     }
 
     public Pista getPista1() {
@@ -36,5 +42,40 @@ public class Aeroporto {
 
     public void setPistaEmergencia(PistaEmergencia pistaEmergencia) {
         this.pistaEmergencia = pistaEmergencia;
+    }
+
+    public List<Aviao> pegarTodosAvioesAterrissagem(){
+
+        List<Fila<Aviao>> listaAvioesAterrissagemP1 = pista1.pegarFilasAterrissagem();
+        List<Fila<Aviao>> listaAvioesAterrissagemP2 = pista2.pegarFilasAterrissagem();
+        List<Aviao> avioesFilaAterrissagem = new ArrayList<>();
+
+
+
+        for(Fila<Aviao> f: listaAvioesAterrissagemP1) {
+
+            int i = 0;
+
+            while (i < f.pegarTamanho()){
+
+                Aviao temp = f.pegar(i);
+                avioesFilaAterrissagem.add(temp);
+                i++;
+            }
+        }
+
+        for(Fila<Aviao> f: listaAvioesAterrissagemP2) {
+
+            int i = 0;
+
+            while (i < f.pegarTamanho()){
+
+                Aviao temp = f.pegar(i);
+                avioesFilaAterrissagem.add(temp);
+                i++;
+            }
+        }
+
+        return avioesFilaAterrissagem;
     }
 }

@@ -19,47 +19,164 @@ public class Simulador {
 
         int i = 0;
 
-        while(i <= 10){
+        while(i < 4){
+
+            System.out.println("====================== Rodada " + (i + 1) + "====================== ");
 
             List<Aviao> avioesChegando = criarAvioes();
             alocarAvioes(avioesChegando);
+            imprimirConteudoFilas();
+
+            System.out.println(" ");
+            System.out.println(" ");
+            System.out.println(" ");
+            System.out.println(" ");
 
             i++;
+            diminuirCombustivel();
         }
     }
 
-    private void alocarAvioes(List<Aviao> avioes){
 
-        var menorFilaPista1 = aeroporto.getPista1().pegarMenorFilaAterrissagem();
-        var menorFilaPista2 = aeroporto.getPista2().pegarMenorFilaAterrissagem();
+    private void diminuirCombustivel() {
 
+        List<Aviao> avioes = aeroporto.pegarTodosAvioesAterrissagem();
 
-        for(Aviao a: avioes) {
+        avioes.stream().forEach(a-> a.setNivelCombustivel(a.getNivelCombustivel() -1));
+    }
 
-            if(menorFilaPista1.pegarTamanho() >= menorFilaPista2.pegarTamanho()){
-
-                menorFilaPista2.adicionar(a);
-                System.out.println("Aviao nº " + a.getIdAviao() + " está na fila para pista 2");
-
-            } else {
-                menorFilaPista1.adicionar(a);
-                System.out.println("Aviao nº " + a.getIdAviao() + " está na fila para pista 1");
-            }
-
-        }
+    private void imprimirConteudoFilas(){
 
         int tamanhoFila1Pista1 = aeroporto.getPista1().getFilaAterrisagem1().pegarTamanho();
         int tamanhoFila2Pista1 = aeroporto.getPista1().getFilaAterrisagem2().pegarTamanho();
         int tamanhoFila1Pista2 = aeroporto.getPista2().getFilaAterrisagem1().pegarTamanho();
         int tamanhoFila2Pista2 = aeroporto.getPista2().getFilaAterrisagem2().pegarTamanho();
 
-        System.out.println("Pista 1 - Fila 1: " + tamanhoFila1Pista1 + "aviões");
-        System.out.println("Pista 1 - Fila 2: " + tamanhoFila2Pista1 + "aviões");
-        System.out.println("Pista 2 - Fila 1: " + tamanhoFila1Pista2 + "aviões");
-        System.out.println("Pista 2 - Fila 2: " + tamanhoFila2Pista2 + "aviões");
+        System.out.println("====================== Fila aterrissagem 1 Pista 1");
+        System.out.println(" ");
+        System.out.println("[Numero de aviões] -> " + tamanhoFila1Pista1);
+        System.out.println("[Avioes]");
+        int j = 0;
 
+        if(tamanhoFila1Pista1 > 0){
+
+            while(j < tamanhoFila1Pista1){
+
+
+                Aviao temp = (Aviao) aeroporto.getPista1().getFilaAterrisagem1().pegar(j);
+
+                System.out.println("Aviao "
+                        + temp.getIdAviao()
+                        + " ->"
+                        + "Nivel de combustivel: "
+                        + temp.getNivelCombustivel()
+                        + " Tempo na fila: "
+                        + temp.getTempoNaFila()
+                );
+
+                j++;
+            }
+        }
+
+
+        System.out.println("====================== Fila aterrissagem 2 Pista 1");
+        System.out.println(" ");
+        System.out.println("[Numero de aviões] -> " + tamanhoFila2Pista1);
+        System.out.println("[Avioes]");
+        j = 0;
+
+        if(tamanhoFila2Pista1 > 0){
+
+            while(j < tamanhoFila2Pista1){
+
+                Aviao temp = (Aviao) aeroporto.getPista1().getFilaAterrisagem2().pegar(j);
+
+                System.out.println("Aviao "
+                        + temp.getIdAviao()
+                        + " ->"
+                        + "Nivel de combustivel: "
+                        + temp.getNivelCombustivel()
+                        + " Tempo na fila: "
+                        + temp.getTempoNaFila()
+                );
+
+                j++;
+            }
+        }
+
+        System.out.println("====================== Fila aterrissagem 1 Pista 2");
+        System.out.println("[Numero de aviões] -> " + tamanhoFila1Pista2);
+        System.out.println("[Avioes]");
+        j = 0;
+
+        if(tamanhoFila1Pista2 > 0){
+
+            while(j < tamanhoFila1Pista2){
+
+                Aviao temp = (Aviao) aeroporto.getPista2().getFilaAterrisagem1().pegar(j);
+
+                System.out.println("Aviao "
+                        + temp.getIdAviao()
+                        + " ->"
+                        + "Nivel de combustivel: "
+                        + temp.getNivelCombustivel()
+                        + " Tempo na fila: "
+                        + temp.getTempoNaFila()
+                );
+
+                j++;
+            }
+        }
+
+        System.out.println("====================== Fila aterrissagem 2 Pista 2");
+        System.out.println(" ");
+        System.out.println("[Numero de aviões] -> " + tamanhoFila2Pista2);
+        System.out.println("[Avioes]");
+        j = 0;
+
+        if(tamanhoFila2Pista1 > 0){
+
+            while(j < tamanhoFila2Pista2){
+
+                Aviao temp = (Aviao) aeroporto.getPista2().getFilaAterrisagem2().pegar(j);
+
+                System.out.println("Aviao "
+                        + temp.getIdAviao()
+                        + " ->"
+                        + "Nivel de combustivel: "
+                        + temp.getNivelCombustivel()
+                        + " Tempo na fila: "
+                        + temp.getTempoNaFila()
+                );
+
+                j++;
+            }
+        }
+    }
+
+    private void alocarAvioes(List<Aviao> avioes) {
+
+        for (Aviao a : avioes) {
+
+            Fila menorFilaPista1 = aeroporto.getPista1().pegarMenorFilaAterrissagem();
+            Fila menorFilaPista2 = aeroporto.getPista2().pegarMenorFilaAterrissagem();
+
+            int tamanhoMenorFilaPista1 = aeroporto.getPista1().pegarMenorFilaAterrissagem().pegarTamanho();
+            var tamanhoMenorFilaPista2 = aeroporto.getPista2().pegarMenorFilaAterrissagem().pegarTamanho();
+
+            if (tamanhoMenorFilaPista1 >= tamanhoMenorFilaPista2) {
+
+                menorFilaPista2.adicionar(a);
+
+            } else {
+                menorFilaPista1.adicionar(a);
+
+            }
+
+        }
 
     }
+
 
     private List<Aviao> criarAvioes(){
 

@@ -1,9 +1,14 @@
 package org.example.util;
 
-public class ListaLigada {
+import org.example.domain.Aviao;
 
-	private Celula primeiraCelula = null;
-	private Celula ultimaCelula = null;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ListaLigada <T> {
+
+	private Celula<T> primeiraCelula = null;
+	private Celula<T> ultimaCelula = null;
 	private int totalDeElementos = 0;
 
 	private static final String MSG_ERRO_AO_REMOVER_CELULA_POSICAO_INVALIDA = "Erro ao remover celula: posição inválida.";
@@ -12,9 +17,9 @@ public class ListaLigada {
 	private static final String MSG_ERRO_AO_RECUPERAR_PRIMEIRA_POSICAO_ESTA_VAZIA = "Erro ao recuperar: nao contem elementos.";
 	private static final String MSG_ERRO_AO_INSERIR_POSICAO_INVALIDA = "Erro ao tentar inserir: posicao invalida.";
 
-	public void adicionarNoComeco(Object novoElemento) {
+	public void adicionarNoComeco(T novoElemento) {
 
-		Celula nova;
+		Celula<T> nova;
 		if (ehVazia()) {
 			nova = new Celula(novoElemento);
 			ultimaCelula = nova;
@@ -26,12 +31,12 @@ public class ListaLigada {
 		totalDeElementos++;
 	}
 
-	public void adicionarNoFinal(Object novoElemento) {
+	public void adicionarNoFinal(T novoElemento) {
 
 		if (ehVazia()) {
 			adicionarNoComeco(novoElemento);
 		} else {
-			Celula nova = new Celula(novoElemento);
+			Celula<T> nova = new Celula(novoElemento);
 			ultimaCelula.setProximo(nova);
 			nova.setAnterior(ultimaCelula);
 			ultimaCelula = nova;
@@ -44,7 +49,7 @@ public class ListaLigada {
 		return (posicao >= 0) && (posicao <= totalDeElementos);
 	}
 
-	public void adicinarNaPosicao(Object novoElemento, int posicao) {
+	public void adicinarNaPosicao(T novoElemento, int posicao) {
 
 		if (!validarPosicaoInsercao(posicao)) {
 			throw new IllegalArgumentException(MSG_ERRO_AO_INSERIR_POSICAO_INVALIDA);
@@ -76,14 +81,14 @@ public class ListaLigada {
 		return totalDeElementos;
 	}
 
-	public Object pegarPrimeiro() {
+	public T pegarPrimeiro() {
 		if (primeiraCelula == null)
 			throw new RuntimeException(MSG_ERRO_AO_RECUPERAR_PRIMEIRA_POSICAO_ESTA_VAZIA);
 
 		return primeiraCelula.getElemento();
 	}
 
-	public Object pegarUltima() {
+	public T pegarUltima() {
 		if (ultimaCelula == null)
 			throw new RuntimeException(MSG_ERRO_AO_RECUPERAR_PRIMEIRA_POSICAO_ESTA_VAZIA);
 
@@ -94,7 +99,7 @@ public class ListaLigada {
 		return (posicao >= 0) && (posicao < totalDeElementos);
 	}
 
-	private Celula pegarCelula(int posicao) {
+	private Celula<T> pegarCelula(int posicao) {
 
 		if (!validarPosicaoRecuperacao(posicao)) {
 			throw new IllegalArgumentException(MSG_ERRO_AO_RECUPERAR_CELULA_POSICAO_INVALIDA);
@@ -110,13 +115,14 @@ public class ListaLigada {
 
 	}
 
-	public Object pegar(int posicao) {
+	public T pegar(int posicao) {
 
-		return pegarCelula(posicao).getElemento();
+		T elemento = pegarCelula(posicao).getElemento();
+		return elemento;
 
 	}
 
-	public boolean contem(Object elementoBuscado) {
+	public boolean contem(T elementoBuscado) {
 
 		Celula atual = primeiraCelula;
 
@@ -188,6 +194,7 @@ public class ListaLigada {
 		}
 	}
 
+
 	public boolean primeiroEhNulo() {
 		return primeiraCelula == null;
 	}
@@ -195,5 +202,6 @@ public class ListaLigada {
 	public boolean ultimoEhNulo() {
 		return ultimaCelula == null;
 	}
+
 
 }

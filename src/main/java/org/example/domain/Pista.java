@@ -1,19 +1,22 @@
 package org.example.domain;
 
+import org.example.util.Celula;
 import org.example.util.Fila;
 import org.example.util.ListaLigada;
 
+import java.util.List;
+
 public class Pista {
 
-    private Fila filaAterrisagem1 = new Fila();
+    private Fila<Aviao> filaAterrisagem1 = new Fila<>();
 
-    private Fila filaAterrisagem2 =  new Fila();
+    private Fila<Aviao> filaAterrisagem2 =  new Fila<>();
 
-    private Fila filaDecolagem = new Fila();
+    private Fila<Aviao> filaDecolagem = new Fila<>();
 
-    private ListaLigada listaDeAterrisagem = new ListaLigada();
+    private ListaLigada<Aviao> listaDeAterrisagem = new ListaLigada<>();
 
-    private ListaLigada listaDeDecolagem =  new ListaLigada();
+    private ListaLigada<Aviao> listaDeDecolagem =  new ListaLigada<>();
 
     public Fila getFilaAterrisagem1() {
         return filaAterrisagem1;
@@ -35,12 +38,27 @@ public class Pista {
         return listaDeDecolagem;
     }
 
-    public Fila pegarMenorFilaAterrissagem(){
+    public Fila<Aviao> pegarMenorFilaAterrissagem(){
 
-        if(filaAterrisagem1.pegarTamanho() > filaAterrisagem2.pegarTamanho()) {
+        if(filaAterrisagem1.pegarTamanho() < filaAterrisagem2.pegarTamanho()) {
+            return filaAterrisagem1;
+        } else {
             return filaAterrisagem2;
         }
 
-        return filaAterrisagem1;
+
     }
+
+    public List<Fila<Aviao>> pegarFilasAterrissagem(){
+
+        List<Fila<Aviao>> filasAterrissagem = List.of(filaAterrisagem1, filaAterrisagem2);
+
+
+        return filasAterrissagem;
+    }
+
+
+
+
+
 }

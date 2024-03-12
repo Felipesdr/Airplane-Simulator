@@ -1,10 +1,15 @@
 package org.example.util;
 
-public class Fila {
+import org.example.domain.Aviao;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Fila<T> {
 	
-	private ListaLigada lista = new ListaLigada();
+	private ListaLigada<T> lista = new ListaLigada<>();
 	
-	public void adicionar(Object elemento) {
+	public void adicionar(T elemento) {
 		lista.adicionarNoFinal(elemento);
 	}
 	
@@ -16,33 +21,40 @@ public class Fila {
 		return lista.ehVazia();
 	}
 	
-	public Object poll() {
+	public T poll() {
 		
 		if (ehVazia()) {
 			return null;
 		}
 		else {
-			Object primeiro = lista.pegarPrimeiro();
+			T primeiro = lista.pegarPrimeiro();
 			lista.removerDoComeco();
 			return primeiro;
 		}
 	}
 	
-	public boolean contem(Object elemento) {
+	public boolean contem(T elemento) {
 		return lista.contem(elemento);
 	}
 	
-	public Object pegaPrimeiro() {
+	public T pegaPrimeiro() {
 		return lista.pegarPrimeiro();
 	}
 	
-	public Object pegaUltimo() {
+	public T pegaUltimo() {
 		return lista.pegarUltima();
 	}
 	
 	public int pegarTamanho() {
 		return lista.pegarTotalElementos();
 	}
+
+	public T pegar(int posicao){
+
+		return lista.pegar(posicao);
+	}
+
+
 
 
 }

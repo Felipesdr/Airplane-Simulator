@@ -7,9 +7,12 @@ public class Aviao {
     private Long idAviao;
     private Integer nivelCombustivel;
 
+    private Integer tempoNaFila;
+
     public Aviao(Long idAviao){
         this.idAviao = idAviao;
         this.nivelCombustivel = RandomPicker.getRandomNumberNot0(12);
+        this.tempoNaFila = 0;
     }
 
     public Long getIdAviao() {
@@ -26,5 +29,18 @@ public class Aviao {
 
     public void setNivelCombustivel(Integer nivelCombustivel) {
         this.nivelCombustivel = nivelCombustivel;
+    }
+
+    public void consumirCombustivel(){
+
+        nivelCombustivel --;
+    }
+
+    public Integer getTempoNaFila() {
+        return tempoNaFila;
+    }
+
+    public void setTempoNaFila(Integer tempoNaFila) {
+        this.tempoNaFila = tempoNaFila;
     }
 }

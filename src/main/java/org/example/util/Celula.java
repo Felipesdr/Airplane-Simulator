@@ -1,22 +1,22 @@
 package org.example.util;
 
-public class Celula {
+public class Celula<T> {
 	
-	private Object elemento;
-	private Celula proximo;
-	private Celula anterior;
+	private T elemento;
+	private Celula<T> proximo;
+	private Celula<T> anterior;
 	
 	
-	public Celula(Object elemento) {
+	public Celula(T elemento) {
 		this(elemento, null);
 	}
 	
-	public Celula(Object elemento, Celula proximo) {
+	public Celula(T elemento, Celula proximo) {
 		this.elemento = elemento;
 		this.proximo = proximo;
 	}
 	
-	public Object getElemento() {
+	public T getElemento() {
 		return elemento;
 	}
 
