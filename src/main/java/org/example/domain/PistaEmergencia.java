@@ -5,9 +5,11 @@ import org.example.util.ListaLigada;
 
 public class PistaEmergencia {
 
-    private Fila filaDeDecolagem = new Fila();
+    private Fila<Aviao> filaDeDecolagem = new Fila<>();
 
-    private ListaLigada listaAterrisagemEmergencia =  new ListaLigada();
+    private ListaLigada<Aterrisagem> listaAterrisagemEmergencia =  new ListaLigada<>();
+
+    private ListaLigada<Decolagem> listaDecolagem = new ListaLigada<>();
 
 
     public Fila getFilaDeDecolagem() {
@@ -24,5 +26,13 @@ public class PistaEmergencia {
 
     public void setListaAterrisagemEmergencia(ListaLigada listaAterrisagemEmergencia) {
         this.listaAterrisagemEmergencia = listaAterrisagemEmergencia;
+    }
+
+    public ListaLigada<Decolagem> getListaDecolagem() {
+        return listaDecolagem;
+    }
+
+    public void setListaDecolagem(ListaLigada<Decolagem> listaDecolagem) {
+        this.listaDecolagem = listaDecolagem;
     }
 }

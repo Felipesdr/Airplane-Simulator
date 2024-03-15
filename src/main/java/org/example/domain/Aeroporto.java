@@ -78,4 +78,28 @@ public class Aeroporto {
 
         return avioesFilaAterrissagem;
     }
+
+    public List<Aviao> pegarTodosAvioesDecolagem(){
+
+        Fila<Aviao> filaDecolagemP1 = pista1.getFilaDecolagem();
+        Fila<Aviao> filaDecolagemP2 = pista2.getFilaDecolagem();
+        Fila<Aviao> filaEmergência = pistaEmergencia.getFilaDeDecolagem();
+        List<Aviao> avioesFilaDecolagem = new ArrayList<>();
+
+        List<Fila<Aviao>> filasDecolagem = List.of(filaDecolagemP1, filaDecolagemP2, filaEmergência);
+
+        for(Fila<Aviao> f: filasDecolagem) {
+
+            int i = 0;
+
+            while (i < f.pegarTamanho()){
+
+                Aviao temp = f.pegar(i);
+                avioesFilaDecolagem.add(temp);
+                i++;
+            }
+        }
+
+        return avioesFilaDecolagem;
+    }
 }

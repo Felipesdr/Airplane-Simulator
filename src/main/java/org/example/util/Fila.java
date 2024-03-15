@@ -54,6 +54,13 @@ public class Fila<T> {
 		return lista.pegar(posicao);
 	}
 
+	public void removerPorPosicao(int posicao){
+
+		lista.removerNaPosicao(posicao);
+	}
+
+
+
 
 
 
