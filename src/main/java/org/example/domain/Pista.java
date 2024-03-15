@@ -41,7 +41,7 @@ public class Pista {
 
     public Fila<Aviao> pegarMenorFilaAterrissagem(){
 
-        if(filaAterrisagem1.pegarTamanho() < filaAterrisagem2.pegarTamanho()) {
+        if(filaAterrisagem1.pegarTamanho() <= filaAterrisagem2.pegarTamanho()) {
             return filaAterrisagem1;
         } else {
             return filaAterrisagem2;
@@ -80,6 +80,8 @@ public class Pista {
         return maiorFila;
 
     }
+
+
 
 
 

@@ -11,7 +11,7 @@ public class Aviao {
 
     public Aviao(Long idAviao){
         this.idAviao = idAviao;
-        this.nivelCombustivel = RandomPicker.getRandomNumberNot0(12);
+        this.nivelCombustivel = RandomPicker.getRandomNumberNot0(20);
         this.tempoNaFila = 0;
     }
 

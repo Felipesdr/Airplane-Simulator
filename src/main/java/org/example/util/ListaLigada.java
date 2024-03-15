@@ -4,6 +4,7 @@ import org.example.domain.Aviao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ListaLigada <T> {
 
@@ -36,7 +37,7 @@ public class ListaLigada <T> {
 		if (ehVazia()) {
 			adicionarNoComeco(novoElemento);
 		} else {
-			Celula<T> nova = new Celula(novoElemento);
+			Celula<T> nova = new Celula<T>(novoElemento);
 			ultimaCelula.setProximo(nova);
 			nova.setAnterior(ultimaCelula);
 			ultimaCelula = nova;
@@ -137,6 +138,23 @@ public class ListaLigada <T> {
 		return false;
 	}
 
+	public int pegarPosicao(T elementoBuscado){
+
+		Celula atual = primeiraCelula;
+		int posicao = 0;
+
+		while (atual != null) {
+
+			if (atual.getElemento().equals(elementoBuscado)) {
+				return posicao;
+			}
+			atual = atual.getProximo();
+			posicao++;
+		}
+
+		return -1;
+	}
+
 	public void removerDoComeco() {
 
 		if (ehVazia()) {
@@ -203,5 +221,16 @@ public class ListaLigada <T> {
 		return ultimaCelula == null;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		ListaLigada<?> that = (ListaLigada<?>) o;
+		return totalDeElementos == that.totalDeElementos && Objects.equals(primeiraCelula, that.primeiraCelula) && Objects.equals(ultimaCelula, that.ultimaCelula);
+	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(primeiraCelula, ultimaCelula, totalDeElementos);
+	}
 }

@@ -102,4 +102,14 @@ public class Aeroporto {
 
         return avioesFilaDecolagem;
     }
+
+    public int pegarNumeroPista(Pista pista){
+
+        if (pista == pista1){
+            return 1;
+        }
+
+        return 2;
+
+    }
 }

@@ -33,6 +33,7 @@ public class Simulador {
     private Scanner sc = new Scanner(System.in);
     private Integer contadorDeRodadas = 0;
     private Integer contadorAvioesCaindo = 0;
+    private Integer contadorPousosEmergencia = 0;
 
     public Simulador() {
         this.aeroporto = iniciarAeroporto();
@@ -40,7 +41,7 @@ public class Simulador {
         this.pista2 = aeroporto.getPista2();
         this.pistaEmergencia = aeroporto.getPistaEmergencia();
         this.filaP1Aterrissagem1 = aeroporto.getPista1().getFilaAterrisagem1();
-        this.filaP1Aterrissagem2 = aeroporto.getPista1().getFilaAterrisagem1();
+        this.filaP1Aterrissagem2 = aeroporto.getPista1().getFilaAterrisagem2();
         this.filaP1Decolagem = aeroporto.getPista1().getFilaDecolagem();
         this.filaP2Aterrissagem1 = aeroporto.getPista2().getFilaAterrisagem1();
         this.filaP2Aterrissagem2 = aeroporto.getPista2().getFilaAterrisagem2();
@@ -63,29 +64,28 @@ public class Simulador {
             System.out.println("====================== Rodada " + (contadorDeRodadas + 1) + "====================== ");
             System.out.println(" ");
 
+
             System.out.println("====================== Estaticas ====================== ");
             double mediaDecolagem = calcularMediaDecolagem();
-            double mediaAterrissagem = calcularMediaAterrissagem();
             System.out.println("Media de tempo para decolagem: " + mediaDecolagem);
+            double mediaAterrissagem = calcularMediaAterrissagem();
             System.out.println("Media de tempo para aterrissagem: " + mediaAterrissagem);
-            cairAviao();
             System.out.println("Queda de aviões: " + contadorAvioesCaindo);
 
-            System.out.println("====================== Decolagens e aterrissagens ====================== ");
-            escolherProcedimento();
             System.out.println("====================== Chegada de avioes ====================== ");
             List<Aviao> avioesParaAterrisar = criarAvioes();
             alocarAvioesAterrissagem(avioesParaAterrisar);
-
             List<Aviao> avioesParaDecolar = criarAvioes();
             alocarAvioesDecolagem(avioesParaDecolar);
-
             imprimirConteudoFilas();
 
             System.out.println(" ");
-
+            System.out.println("====================== Decolagens e aterrissagens ====================== ");
+            escolherProcedimento();
+            System.out.println(" ");
 
             diminuirCombustivel();
+            cairAviao();
             aumentarTempoNaFila();
 
             System.out.println("Para continuar digite 1");
@@ -275,166 +275,233 @@ public class Simulador {
         return mediaDecolagem;
     }
 
-    private void escolherProcedimento() {
-
-        escolherProcedimentoPista1();
-        escolherProcedimentoPista2();
-
-        if (!filaPEmergencia.ehVazia()) {
-            decolarPistaDeEmergencia(filaPEmergencia);
-        }
-    }
-
-    private boolean avaliarPousoDeEmergeniaP1() {
+    private void escolherProcedimento(){
 
         int i = 0;
-        while (i < filaP1Aterrissagem1.pegarTamanho() && !filaP1Aterrissagem1.ehVazia()) {
+        int contadorEmergencia = 0;
 
-            Aviao temp = filaP1Aterrissagem1.pegar(i);
+        if(!filaP1Aterrissagem1.ehVazia()){
 
-            if (temp.getNivelCombustivel() == 0) {
-                return true;
+            while (i < filaP1Aterrissagem1.pegarTamanho()){
+
+                if(contadorEmergencia == 2){
+                    return;
+                }
+
+                Aviao temp = filaP1Aterrissagem1.pegar(i);
+                if(avaliarPousoDeEmergencia(temp, filaP1Aterrissagem1, pista1, contadorEmergencia)){
+
+                    escolherPistaPousoEmergencia(temp, filaP1Aterrissagem1, pista1, contadorEmergencia);
+                    contadorEmergencia++;
+                }
+                i++;
             }
-
-            i++;
         }
 
         i = 0;
-        while (i < filaP1Aterrissagem2.pegarTamanho() && !filaP1Aterrissagem2.ehVazia()) {
-
-            Aviao temp = filaP1Aterrissagem2.pegar(i);
-
-            if (temp.getNivelCombustivel() == 0) {
-
-                return true;
+        if(!filaP1Aterrissagem2.ehVazia()){
+            if(contadorEmergencia == 2){
+                return;
             }
+            while (i < filaP1Aterrissagem2.pegarTamanho()){
 
-            i++;
+                Aviao temp = filaP1Aterrissagem2.pegar(i);
+
+                if(avaliarPousoDeEmergencia(temp, filaP1Aterrissagem2, pista1, contadorEmergencia)){
+                    escolherPistaPousoEmergencia(temp, filaP1Aterrissagem2, pista1, contadorEmergencia);
+                    contadorEmergencia++;
+                }
+                i++;
+            }
         }
+        if(contadorEmergencia < 1){
+            avaliarPousoOuDescolagem(pista1, filaP1Aterrissagem1, filaP1Aterrissagem2);
+        }
+
+        i = 0;
+        if(!filaP2Aterrissagem1.ehVazia()){
+            while (i < filaP2Aterrissagem1.pegarTamanho()){
+                if(contadorEmergencia == 2){
+                    return;
+                }
+                Aviao temp = filaP2Aterrissagem1.pegar(i);
+                if(avaliarPousoDeEmergencia(temp, filaP2Aterrissagem1, pista2, contadorEmergencia)){
+
+                    escolherPistaPousoEmergencia(temp, filaP2Aterrissagem1, pista2, contadorEmergencia);
+                    contadorEmergencia++;
+
+                }
+                i++;
+            }
+        }
+
+        i = 0;
+            while (i < filaP2Aterrissagem2.pegarTamanho()){
+
+                if(!filaP2Aterrissagem2.ehVazia()){
+
+                    if(contadorEmergencia == 2){
+                        return;
+                    }
+
+                Aviao temp = filaP2Aterrissagem2.pegar(i);
+
+                if(avaliarPousoDeEmergencia(temp, filaP2Aterrissagem2, pista2, contadorEmergencia)){
+
+                    escolherPistaPousoEmergencia(temp, filaP2Aterrissagem2, pista2, contadorEmergencia);
+                    contadorEmergencia++;
+                }
+                i++;
+            }
+        }
+
+        if(contadorEmergencia < 2) {
+
+            avaliarPousoOuDescolagem(pista2, filaP2Aterrissagem1, filaP2Aterrissagem2);
+        }
+
+        if(contadorEmergencia == 0) {
+
+            decolarPistaEmergencia();
+        }
+
+
+    }
+
+    private void avaliarPousoOuDescolagem(Pista pista, Fila<Aviao> filaA1, Fila filaA2) {
+
+        int tamanhoFA1 = filaA1.pegarTamanho();
+        int tamanhoFA2 = filaA2.pegarTamanho();
+        int tamanhoFD = pista.getFilaDecolagem().pegarTamanho();
+
+
+        if (tamanhoFA1 > tamanhoFA2 && tamanhoFA1 > tamanhoFD) {
+
+            pousar(filaA1, pista, aeroporto.pegarNumeroPista(pista));
+
+        } else if (tamanhoFA2 > tamanhoFA1 && tamanhoFA2 > tamanhoFD) {
+
+            pousar(filaA2, pista, aeroporto.pegarNumeroPista(pista));
+
+        } else if(tamanhoFD >= tamanhoFA1 && tamanhoFD >= tamanhoFA2) {
+
+            decolar(pista.getFilaDecolagem(), pista, aeroporto.pegarNumeroPista(pista));
+        }
+
+    }
+
+    private boolean avaliarPousoDeEmergencia(Aviao aviao, Fila fila, Pista pista, int contadorEmergencia) {
+
+        if(aviao.getNivelCombustivel() == 0){
+
+            escolherPistaPousoEmergencia(aviao, fila, pista, contadorEmergencia);
+            return true;
+        }
+
         return false;
     }
 
-    private void escolherProcedimentoPista1() {
+    private void escolherPistaPousoEmergencia(Aviao aviao, Fila<Aviao> fila, Pista pista, int contadorEmergencia){
 
-        int tamanhoP1FA1 = filaP1Aterrissagem1.pegarTamanho();
-        int tamanhoP1FA2 = filaP1Aterrissagem2.pegarTamanho();
-        int tamanhoP1FD = filaP1Decolagem.pegarTamanho();
+        switch (contadorEmergencia){
 
-        if (!filaP1Aterrissagem1.ehVazia() && tamanhoP1FA1 >= tamanhoP1FA2 && tamanhoP1FA1 > tamanhoP1FD) {
+            case (0):
+                pousoEmergenciaPemergencia(aviao, fila);
+                break;
 
-            pousarPista1(filaP1Aterrissagem1);
+            case (1):
+                pousoEmergencia(aviao, fila, pista, aeroporto.pegarNumeroPista(pista));
+                break;
 
-        } else if (!filaP1Aterrissagem2.ehVazia() && tamanhoP1FA2 >= tamanhoP1FA1 && tamanhoP1FA2 >= tamanhoP1FD) {
+            case (2):
 
-            pousarPista1(filaP1Aterrissagem2);
+                if(pista.equals(pista1)){
+                    pousoEmergencia(aviao, fila, pista2, aeroporto.pegarNumeroPista(pista2));
+                    break;
+                }
 
-        } else if (!filaP1Decolagem.ehVazia() && tamanhoP1FD > tamanhoP1FA1 && tamanhoP1FD >= tamanhoP1FA2) {
-
-            decolarPista1(filaP1Decolagem);
-
+                if(pista.equals(pista2)){
+                    pousoEmergencia(aviao, fila, pista1, aeroporto.pegarNumeroPista(pista1));
+                    break;
+                }
         }
-
     }
 
-    private void escolherProcedimentoPista2() {
+    private void pousoEmergencia(Aviao aviao, Fila<Aviao> fila, Pista pista, int numeroPista){
 
-        int tamanhoP2FA1 = filaP2Aterrissagem1.pegarTamanho();
-        int tamanhoP2FA2 = filaP2Aterrissagem2.pegarTamanho();
-        int tamanhoP2FD = filaP2Decolagem.pegarTamanho();
+        int chegada = contadorDeRodadas - aviao.getTempoNaFila();
 
-        if (!filaP2Aterrissagem1.ehVazia() && tamanhoP2FA1 >= tamanhoP2FA2 && tamanhoP2FA1 > tamanhoP2FD) {
+        Aterrisagem atr = new Aterrisagem(chegada, contadorDeRodadas, aviao);
 
-            pousarPista2(filaP2Aterrissagem1);
+        pista.getListaDeAterrisagem().adicionarNoFinal(atr);
 
-        } else if (!filaP2Aterrissagem2.ehVazia() && tamanhoP2FA2 >= tamanhoP2FA1 && tamanhoP2FA2 >= tamanhoP2FD) {
+        fila.poll();
 
-            pousarPista2(filaP2Aterrissagem2);
+        System.out.println("Aviao " + aviao.getIdAviao() + " Realizou um pouso de emergencia na pista " + numeroPista);
+    }
 
-        } else if (!filaP2Decolagem.ehVazia() && tamanhoP2FD > tamanhoP2FA1 && tamanhoP2FD >= tamanhoP2FA2) {
+    private void pousoEmergenciaPemergencia(Aviao aviao, Fila<Aviao> fila){
 
-            decolarPista2(filaP2Decolagem);
+        int chegada = contadorDeRodadas - aviao.getTempoNaFila();
+
+        Aterrisagem atr = new Aterrisagem(chegada, contadorDeRodadas, aviao);
+
+        pistaEmergencia.getListaAterrisagemEmergencia().adicionarNoFinal(atr);
+
+        fila.poll();
+
+        System.out.println("Aviao " + aviao.getIdAviao() + " Realizou um pouso de emergencia na pista na pista de emergencia ");
+    }
+
+    private void decolar(Fila<Aviao> fila, Pista pista, int numeroPista) {
+
+        if(!fila.ehVazia()) {
+
+            Aviao temp = fila.pegaPrimeiro();
+
+            int chegada = contadorDeRodadas - temp.getTempoNaFila();
+
+            Decolagem dcl = new Decolagem(chegada, contadorDeRodadas, temp);
+
+            pista.getListaDeDecolagem().adicionarNoFinal(dcl);
+
+            fila.poll();
+
+            System.out.println("Aviao " + temp.getIdAviao() + " Decolou na pista " + numeroPista);
         }
-
     }
 
+    private void decolarPistaEmergencia(){
 
-    private void decolarPista1(Fila<Aviao> fila) {
+        if(!filaPEmergencia.ehVazia()){
+
+            Aviao temp = filaPEmergencia.pegaPrimeiro();
+
+            int chegada = contadorDeRodadas - temp.getTempoNaFila();
+
+            Decolagem dcl = new Decolagem(chegada, contadorDeRodadas, temp);
+
+            pistaEmergencia.getListaDecolagem().adicionarNoFinal(dcl);
+
+            filaPEmergencia.poll();
+
+            System.out.println("Aviao " + temp.getIdAviao() + " Decolou na pista na pista de emergencia");
+        }
+    }
+
+    private void pousar(Fila<Aviao> fila, Pista pista, int numeroPista){
 
         Aviao temp = fila.pegaPrimeiro();
-
-        int chegada = contadorDeRodadas - temp.getTempoNaFila();
-
-        Decolagem dcl = new Decolagem(chegada, contadorDeRodadas, temp);
-
-        pista1.getListaDeDecolagem().adicionarNoFinal(dcl);
-
-        fila.poll();
-
-        System.out.println("Aviao " + temp.getIdAviao() + " Decolou na pista 1");
-
-    }
-
-    private void decolarPista2(Fila<Aviao> fila) {
-
-        Aviao temp = fila.pegaPrimeiro();
-
-        int chegada = contadorDeRodadas - temp.getTempoNaFila();
-
-        Aterrisagem dcl = new Aterrisagem(chegada, contadorDeRodadas, temp);
-
-        pista2.getListaDeDecolagem().adicionarNoFinal(dcl);
-
-        fila.poll();
-
-        System.out.println("Aviao " + temp.getIdAviao() + " Decolou na pista 2");
-
-    }
-
-    private void decolarPistaDeEmergencia(Fila<Aviao> fila) {
-
-        Aviao temp = fila.pegaPrimeiro();
-
-        int chegada = contadorDeRodadas - temp.getTempoNaFila();
-
-        Decolagem atr = new Decolagem(chegada, contadorDeRodadas, temp);
-
-        pistaEmergencia.getListaDecolagem().adicionarNoFinal(atr);
-
-        fila.poll();
-
-        System.out.println("Aviao " + temp.getIdAviao() + " Decolou na pista de emergência");
-    }
-
-    private void pousarPista1(Fila<Aviao> filaAterrissagem) {
-
-        Aviao temp = filaAterrissagem.pegaPrimeiro();
 
         int chegada = contadorDeRodadas - temp.getTempoNaFila();
 
         Aterrisagem atr = new Aterrisagem(chegada, contadorDeRodadas, temp);
 
-        pista1.getListaDeAterrisagem().adicionarNoFinal(atr);
+        pista.getListaDeAterrisagem().adicionarNoFinal(atr);
 
-        filaAterrissagem.poll();
+        fila.poll();
 
-        System.out.println("Aviao " + temp.getIdAviao() + " Pousou na pista 1");
-
-    }
-
-    private void pousarPista2(Fila<Aviao> filaAterrissagem) {
-
-        Aviao temp = filaAterrissagem.pegaPrimeiro();
-
-        int chegada = contadorDeRodadas - temp.getTempoNaFila();
-
-        Aterrisagem atr = new Aterrisagem(chegada, contadorDeRodadas, temp);
-
-        pista2.getListaDeAterrisagem().adicionarNoFinal(atr);
-
-        filaAterrissagem.poll();
-
-        System.out.println("Aviao " + temp.getIdAviao() + " Pousou na pista 2");
-
+        System.out.println("Aviao " + temp.getIdAviao() + " Pousou na pista " + numeroPista);
     }
 
     private void aumentarTempoNaFila() {
@@ -458,23 +525,15 @@ public class Simulador {
     private void alocarAvioesAterrissagem(List<Aviao> avioes) {
 
         System.out.println(avioes.size() + " aviões chegaram Para aterrissagem");
+        List<Fila<Aviao>> filasAterrissagem = List.of(filaP1Aterrissagem1,filaP1Aterrissagem2,filaP2Aterrissagem1,filaP2Aterrissagem2);
 
+        Comparator<Fila<Aviao>> cFila = Comparator.comparingInt(Fila::pegarTamanho);
         for (Aviao a : avioes) {
 
-            Fila<Aviao> menorFilaPista1 = aeroporto.getPista1().pegarMenorFilaAterrissagem();
-            Fila<Aviao> menorFilaPista2 = aeroporto.getPista2().pegarMenorFilaAterrissagem();
 
-            int tamanhoMenorFilaPista1 = aeroporto.getPista1().pegarMenorFilaAterrissagem().pegarTamanho();
-            var tamanhoMenorFilaPista2 = aeroporto.getPista2().pegarMenorFilaAterrissagem().pegarTamanho();
+            Fila<Aviao> menorFilaAterrissagem = filasAterrissagem.stream().min(cFila).orElse(null);
 
-            if (tamanhoMenorFilaPista1 >= tamanhoMenorFilaPista2) {
-
-                menorFilaPista2.adicionar(a);
-
-            } else {
-
-                menorFilaPista1.adicionar(a);
-            }
+            menorFilaAterrissagem.adicionar(a);
 
             if (filaP1Aterrissagem1.contem(a)) {
                 System.out.println("- Aviao " + a.getIdAviao() + " foi alocado na Fila de aterrissagem 1 da Pista 1");
@@ -520,7 +579,6 @@ public class Simulador {
 
     }
 
-
     private List<Aviao> criarAvioes() {
 
         int i = 0;
@@ -562,6 +620,7 @@ public class Simulador {
         int tamanhoFilaEmergencia = filaPEmergencia.pegarTamanho();
 
 
+
         System.out.println("================================================================ Pista1");
         System.out.println(" ");
         System.out.println("[Aterrissagem fila 1] -> " + tamanhoP1Aterrissagem1 + " aviões na fila");
@@ -571,7 +630,7 @@ public class Simulador {
 
             while (j < tamanhoP1Aterrissagem1) {
 
-                Aviao temp = (Aviao) filaP1Aterrissagem1.pegar(j);
+                Aviao temp = filaP1Aterrissagem1.pegar(j);
 
                 System.out.println("Aviao "
                         + temp.getIdAviao()

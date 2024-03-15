@@ -3,7 +3,9 @@ package org.example.util;
 import org.example.domain.Aviao;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class Fila<T> {
 	
@@ -59,9 +61,20 @@ public class Fila<T> {
 		lista.removerNaPosicao(posicao);
 	}
 
+	public int pegarPosicao(T elemento){
+		return lista.pegarPosicao(elemento);
+	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Fila<?> fila = (Fila<?>) o;
+		return Objects.equals(lista, fila.lista);
+	}
 
-
-
-
+	@Override
+	public int hashCode() {
+		return Objects.hash(lista);
+	}
 }
