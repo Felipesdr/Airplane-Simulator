@@ -319,7 +319,7 @@ public class Simulador {
 
         }
         if (contadorEmergencia <= 1) {
-            avaliarPousoOuDescolagem(pista1, filaP1Aterrissagem1, filaP1Aterrissagem2);
+            avaliarPousoOuDescolagem(pista1, filaP1Aterrissagem1, filaP1Aterrissagem2, filaP1Decolagem);
         }
 
         if (contadorEmergencia > 0) contadorEmergencia = 1;
@@ -369,7 +369,7 @@ public class Simulador {
 
         if (contadorEmergencia < 2) {
 
-            avaliarPousoOuDescolagem(pista2, filaP2Aterrissagem1, filaP2Aterrissagem2);
+            avaliarPousoOuDescolagem(pista2, filaP2Aterrissagem1, filaP2Aterrissagem2, filaP1Decolagem);
         }
 
         if (contadorEmergencia == 0) {
@@ -380,12 +380,11 @@ public class Simulador {
 
     }
 
-    public void avaliarPousoOuDescolagem(Pista pista, Fila<Aviao> filaA1, Fila filaA2) {
+    public void avaliarPousoOuDescolagem(Pista pista, Fila<Aviao> filaA1, Fila<Aviao> filaA2, Fila<Aviao> filaD) {
 
         int tamanhoFA1 = filaA1.pegarTamanho();
         int tamanhoFA2 = filaA2.pegarTamanho();
-        int tamanhoFD = pista.getFilaDecolagem().pegarTamanho();
-
+        int tamanhoFD =  filaD.pegarTamanho();
 
         if (tamanhoFA1 >= tamanhoFA2 && tamanhoFA1 > tamanhoFD) {
 

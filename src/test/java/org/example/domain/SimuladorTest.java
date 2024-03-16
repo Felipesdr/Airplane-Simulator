@@ -58,35 +58,58 @@ class SimuladorTest {
     }
 
     @Test
-    void iniciarSimulador() {
+    void testIniciarSimulador() {
     }
 
     @Test
-    void cairAviao() {
+    void testCairAviao() {
     }
 
     @Test
-    void calcularMediaAterrissagem() {
+    void testCalcularMediaAterrissagem() {
     }
 
     @Test
-    void calcularMediaDecolagem() {
+    void testCalcularMediaDecolagem() {
     }
 
     @Test
-    void escolherProcedimento() {
+    void testEscolherProcedimento() {
+
+
     }
 
     @Test
-    void avaliarPousoOuDescolagem() {
+    void testAvaliarPousoOuDescolagem() {
+
+        filaP1Aterrissagem1.adicionar(aviao1);
+        filaP1Aterrissagem1.adicionar(aviao2);
+        filaP1Aterrissagem2.adicionar(aviao3);
+        filaP1Decolagem.adicionar(aviao4);
+
+        simulador.avaliarPousoOuDescolagem(pista1, filaP1Aterrissagem1, filaP1Aterrissagem2, filaP1Decolagem);
+
+        assertEquals(1, filaP1Aterrissagem1.pegarTamanho());
+        assertEquals(2, filaP1Aterrissagem1.pegaPrimeiro().getIdAviao());
     }
 
     @Test
-    void avaliarPousoDeEmergencia() {
+    void testAvaliarPousoDeEmergencia() {
+
+        aviao1.setNivelCombustivel(20);
+        filaP1Aterrissagem1.adicionar(aviao1);
+
+        assertFalse(simulador.avaliarPousoDeEmergencia(aviao1, filaP1Aterrissagem1, pista1, 0));
     }
 
     @Test
-    void escolherPistaPousoEmergencia() {
+    void testEscolherPistaPousoEmergencia() {
+
+        aeroporto.getPista1().getFilaAterrisagem1().adicionar(aviao1);
+
+        simulador.escolherPistaPousoEmergencia(aviao1, aeroporto.getPista1().getFilaAterrisagem1(), aeroporto.getPista1(), 1);
+
+        assertEquals(1, aeroporto.getPista1().getListaDeAterrisagem().pegarTotalElementos());
     }
 
     @Test
