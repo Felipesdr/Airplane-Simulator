@@ -21,8 +21,6 @@ class AeroportoTest {
     private PistaEmergencia pistaEmergencia;
     private Aeroporto aeroporto;
 
-
-
     @BeforeEach
     void setUp() {
 
@@ -73,6 +71,9 @@ class AeroportoTest {
     }
 
     @Test
-    void pegarNumeroPista() {
+    void testPegarNumeroPista() {
+
+        assertEquals(1, aeroporto.pegarNumeroPista(pista1));
+        assertEquals(2, aeroporto.pegarNumeroPista(pista2));
     }
 }
