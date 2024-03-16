@@ -4,6 +4,8 @@ import org.example.util.Fila;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Aeroporto {
 
@@ -44,6 +46,23 @@ public class Aeroporto {
         this.pistaEmergencia = pistaEmergencia;
     }
 
+    public List<Fila<Aviao>> pegarTodasAsFilasAterrissagem() {
+
+        return List.of(pista1.getFilaAterrisagem1(), pista1.getFilaAterrisagem2(), pista2.getFilaAterrisagem1(), pista2.getFilaAterrisagem2());
+    }
+
+    public List<Fila<Aviao>> pegarTodasAsFilaDescolagem() {
+
+        return List.of(pista1.getFilaDecolagem(), pista2.getFilaDecolagem(), pistaEmergencia.getFilaDeDecolagem());
+    }
+
+    public List<Aviao> pegarTodosAvioes(){
+
+        List<Aviao> aterrissagem = pegarTodosAvioesAterrissagem();
+        List<Aviao> decolagem = pegarTodosAvioesDecolagem();
+        List<Aviao> todosAvioes = Stream.concat(aterrissagem.stream(), decolagem.stream()).toList();
+        return todosAvioes;
+    }
     public List<Aviao> pegarTodosAvioesAterrissagem(){
 
         List<Fila<Aviao>> listaAvioesAterrissagemP1 = pista1.pegarFilasAterrissagem();

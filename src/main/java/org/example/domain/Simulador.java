@@ -34,7 +34,6 @@ public class Simulador {
     private Integer contadorDeRodadas = 0;
     private Integer contadorAvioesCaindo = 0;
     private Integer contadorPousosEmergencia = 0;
-    private List<Fila<Aviao>> filas;
 
     public Simulador() {
         this.aeroporto = iniciarAeroporto();
@@ -54,7 +53,6 @@ public class Simulador {
         this.listaAterrissagemPista1 = aeroporto.getPista1().getListaDeAterrisagem();
         this.listaAterrissagemPista2 = aeroporto.getPista2().getListaDeAterrisagem();
         this.listaAterrissagemPistaEmergencia = aeroporto.getPistaEmergencia().getListaAterrisagemEmergencia();
-        this.filas = List.of(filaP1Decolagem, filaP2Decolagem, filaPEmergencia);
     }
 
 
@@ -66,9 +64,9 @@ public class Simulador {
             System.out.println("====================== Rodada " + (contadorDeRodadas + 1) + "====================== ");
             System.out.println(" ");
 
-            diminuirCombustivel();
+            diminuirCombustivel(aeroporto.pegarTodosAvioesAterrissagem());
             cairAviao();
-            aumentarTempoNaFila();
+            aumentarTempoNaFila(aeroporto.pegarTodosAvioes());
 
             System.out.println("====================== Estaticas ====================== ");
             double mediaDecolagem = calcularMediaDecolagem();
@@ -80,9 +78,9 @@ public class Simulador {
 
             System.out.println("====================== Chegada de avioes ====================== ");
             List<Aviao> avioesParaAterrisar = criarAvioes();
-            alocarAvioesAterrissagem(avioesParaAterrisar);
+            alocarAvioesAterrissagem(avioesParaAterrisar, aeroporto.pegarTodasAsFilasAterrissagem());
             List<Aviao> avioesParaDecolar = criarAvioes();
-            alocarAvioesDecolagem(avioesParaDecolar, filas);
+            alocarAvioesDecolagem(avioesParaDecolar, aeroporto.pegarTodasAsFilaDescolagem());
             imprimirConteudoFilas();
 
             System.out.println(" ");
@@ -508,28 +506,19 @@ public class Simulador {
         System.out.println("Aviao " + temp.getIdAviao() + " Pousou na pista " + numeroPista);
     }
 
-    public void aumentarTempoNaFila() {
+    public void aumentarTempoNaFila(List<Aviao> todosAvioes) {
 
-        List<Aviao> avioesAterrissagem = aeroporto.pegarTodosAvioesAterrissagem();
-
-        List<Aviao> avioesDecolagem = aeroporto.pegarTodosAvioesDecolagem();
-
-        avioesAterrissagem.stream().forEach(a -> a.setTempoNaFila(a.getTempoNaFila() + 1));
-        avioesDecolagem.stream().forEach(a -> a.setTempoNaFila(a.getTempoNaFila() + 1));
-
+        todosAvioes.forEach(a -> a.setTempoNaFila(a.getTempoNaFila() + 1));
     }
 
-    public void diminuirCombustivel() {
+    public void diminuirCombustivel(List<Aviao> avioesAterrissagem) {
 
-        List<Aviao> avioes = aeroporto.pegarTodosAvioesAterrissagem();
-
-        avioes.stream().forEach(a -> a.setNivelCombustivel(a.getNivelCombustivel() - 1));
+        avioesAterrissagem.forEach(a -> a.setNivelCombustivel(a.getNivelCombustivel() - 1));
     }
 
-    public void alocarAvioesAterrissagem(List<Aviao> avioes) {
+    public void alocarAvioesAterrissagem(List<Aviao> avioes, List<Fila<Aviao>> filasAterrissagem) {
 
         System.out.println(avioes.size() + " aviões chegaram Para aterrissagem");
-        List<Fila<Aviao>> filasAterrissagem = List.of(filaP1Aterrissagem1, filaP1Aterrissagem2, filaP2Aterrissagem1, filaP2Aterrissagem2);
 
         Comparator<Fila<Aviao>> cFila = Comparator.comparingInt(Fila::pegarTamanho);
         for (Aviao a : avioes) {
