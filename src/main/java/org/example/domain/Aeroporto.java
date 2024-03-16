@@ -50,12 +50,9 @@ public class Aeroporto {
         List<Fila<Aviao>> listaAvioesAterrissagemP2 = pista2.pegarFilasAterrissagem();
         List<Aviao> avioesFilaAterrissagem = new ArrayList<>();
 
-
-
         for(Fila<Aviao> f: listaAvioesAterrissagemP1) {
 
             int i = 0;
-
             while (i < f.pegarTamanho()){
 
                 Aviao temp = f.pegar(i);
@@ -67,7 +64,6 @@ public class Aeroporto {
         for(Fila<Aviao> f: listaAvioesAterrissagemP2) {
 
             int i = 0;
-
             while (i < f.pegarTamanho()){
 
                 Aviao temp = f.pegar(i);
@@ -75,7 +71,6 @@ public class Aeroporto {
                 i++;
             }
         }
-
         return avioesFilaAterrissagem;
     }
 
@@ -83,15 +78,14 @@ public class Aeroporto {
 
         Fila<Aviao> filaDecolagemP1 = pista1.getFilaDecolagem();
         Fila<Aviao> filaDecolagemP2 = pista2.getFilaDecolagem();
-        Fila<Aviao> filaEmergência = pistaEmergencia.getFilaDeDecolagem();
+        Fila<Aviao> filaEmergencia = pistaEmergencia.getFilaDeDecolagem();
         List<Aviao> avioesFilaDecolagem = new ArrayList<>();
 
-        List<Fila<Aviao>> filasDecolagem = List.of(filaDecolagemP1, filaDecolagemP2, filaEmergência);
+        List<Fila<Aviao>> filasDecolagem = List.of(filaDecolagemP1, filaDecolagemP2, filaEmergencia);
 
         for(Fila<Aviao> f: filasDecolagem) {
 
             int i = 0;
-
             while (i < f.pegarTamanho()){
 
                 Aviao temp = f.pegar(i);
@@ -99,7 +93,6 @@ public class Aeroporto {
                 i++;
             }
         }
-
         return avioesFilaDecolagem;
     }
 
@@ -108,8 +101,6 @@ public class Aeroporto {
         if (pista == pista1){
             return 1;
         }
-
         return 2;
-
     }
 }

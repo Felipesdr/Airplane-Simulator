@@ -12,19 +12,19 @@ public class PistaEmergencia {
     private ListaLigada<Decolagem> listaDecolagem = new ListaLigada<>();
 
 
-    public Fila getFilaDeDecolagem() {
+    public Fila<Aviao> getFilaDeDecolagem() {
         return filaDeDecolagem;
     }
 
-    public void setFilaDeDecolagem(Fila filaDeDecolagem) {
+    public void setFilaDeDecolagem(Fila<Aviao> filaDeDecolagem) {
         this.filaDeDecolagem = filaDeDecolagem;
     }
 
-    public ListaLigada getListaAterrisagemEmergencia() {
+    public ListaLigada<Aterrisagem> getListaAterrisagemEmergencia() {
         return listaAterrisagemEmergencia;
     }
 
-    public void setListaAterrisagemEmergencia(ListaLigada listaAterrisagemEmergencia) {
+    public void setListaAterrisagemEmergencia(ListaLigada<Aterrisagem> listaAterrisagemEmergencia) {
         this.listaAterrisagemEmergencia = listaAterrisagemEmergencia;
     }
 

@@ -19,30 +19,28 @@ public class Pista {
 
     private ListaLigada<Decolagem> listaDeDecolagem =  new ListaLigada<>();
 
-    public Fila getFilaAterrisagem1() {
+    public Fila<Aviao> getFilaAterrisagem1() {
         return filaAterrisagem1;
     }
 
-    public Fila getFilaAterrisagem2() {
+    public Fila<Aviao> getFilaAterrisagem2() {
         return filaAterrisagem2;
     }
 
-    public Fila getFilaDecolagem() {
+    public Fila<Aviao> getFilaDecolagem() {
         return filaDecolagem;
     }
 
-    public ListaLigada getListaDeAterrisagem() {
+    public ListaLigada<Aterrisagem> getListaDeAterrisagem() {
         return listaDeAterrisagem;
     }
 
-    public ListaLigada getListaDeDecolagem() {
+    public ListaLigada<Decolagem> getListaDeDecolagem() {
         return listaDeDecolagem;
     }
 
     public List<Fila<Aviao>> pegarFilasAterrissagem(){
 
-        List<Fila<Aviao>> filasAterrissagem = List.of(filaAterrisagem1, filaAterrisagem2);
-
-        return filasAterrissagem;
+        return List.of(filaAterrisagem1, filaAterrisagem2);
     }
 }
