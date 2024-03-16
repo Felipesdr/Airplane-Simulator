@@ -2,6 +2,8 @@ package org.example.domain;
 
 import org.example.util.RandomPicker;
 
+import java.util.Objects;
+
 public class Aviao {
 
     private Long idAviao;
@@ -42,5 +44,18 @@ public class Aviao {
 
     public void setTempoNaFila(Integer tempoNaFila) {
         this.tempoNaFila = tempoNaFila;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Aviao aviao = (Aviao) o;
+        return Objects.equals(idAviao, aviao.idAviao);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idAviao);
     }
 }

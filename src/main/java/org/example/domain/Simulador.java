@@ -64,6 +64,9 @@ public class Simulador {
             System.out.println("====================== Rodada " + (contadorDeRodadas + 1) + "====================== ");
             System.out.println(" ");
 
+            diminuirCombustivel();
+            cairAviao();
+            aumentarTempoNaFila();
 
             System.out.println("====================== Estaticas ====================== ");
             double mediaDecolagem = calcularMediaDecolagem();
@@ -83,10 +86,6 @@ public class Simulador {
             System.out.println("====================== Decolagens e aterrissagens ====================== ");
             escolherProcedimento();
             System.out.println(" ");
-
-            diminuirCombustivel();
-            cairAviao();
-            aumentarTempoNaFila();
 
             System.out.println("Para continuar digite 1");
             System.out.println("Para sair digite 2");
@@ -108,9 +107,9 @@ public class Simulador {
             if (temp.getNivelCombustivel() < 0) {
 
                 filaP1Aterrissagem1.removerPorPosicao(i);
+                i--;
                 contadorAvioesCaindo++;
             }
-
             i++;
         }
 
@@ -122,9 +121,9 @@ public class Simulador {
             if (temp.getNivelCombustivel() < 0) {
 
                 filaP1Aterrissagem2.removerPorPosicao(i);
+                i--;
                 contadorAvioesCaindo++;
             }
-
             i++;
         }
 
@@ -136,9 +135,9 @@ public class Simulador {
             if (temp.getNivelCombustivel() < 0) {
 
                 filaP2Aterrissagem1.removerPorPosicao(i);
+                i--;
                 contadorAvioesCaindo++;
             }
-
             i++;
         }
 
@@ -150,9 +149,9 @@ public class Simulador {
             if (temp.getNivelCombustivel() < 0) {
 
                 filaP2Aterrissagem2.removerPorPosicao(i);
+                i--;
                 contadorAvioesCaindo++;
             }
-
             i++;
         }
     }
@@ -275,92 +274,104 @@ public class Simulador {
         return mediaDecolagem;
     }
 
-    private void escolherProcedimento(){
+    private void escolherProcedimento() {
 
         int i = 0;
         int contadorEmergencia = 0;
 
-        if(!filaP1Aterrissagem1.ehVazia()){
+        if (!filaP1Aterrissagem1.ehVazia()) {
 
-            while (i < filaP1Aterrissagem1.pegarTamanho()){
+            if (contadorEmergencia < 2) {
 
-                if(contadorEmergencia == 2){
-                    return;
+                while (i < filaP1Aterrissagem1.pegarTamanho()) {
+
+
+                    Aviao temp = filaP1Aterrissagem1.pegar(i);
+                    if (avaliarPousoDeEmergencia(temp, filaP1Aterrissagem1, pista1, contadorEmergencia)) {
+
+                        escolherPistaPousoEmergencia(temp, filaP1Aterrissagem1, pista1, contadorEmergencia);
+                        contadorEmergencia++;
+                    }
+                    i++;
                 }
-
-                Aviao temp = filaP1Aterrissagem1.pegar(i);
-                if(avaliarPousoDeEmergencia(temp, filaP1Aterrissagem1, pista1, contadorEmergencia)){
-
-                    escolherPistaPousoEmergencia(temp, filaP1Aterrissagem1, pista1, contadorEmergencia);
-                    contadorEmergencia++;
-                }
-                i++;
             }
+
         }
 
         i = 0;
-        if(!filaP1Aterrissagem2.ehVazia()){
-            if(contadorEmergencia == 2){
-                return;
-            }
-            while (i < filaP1Aterrissagem2.pegarTamanho()){
+        if (!filaP1Aterrissagem2.ehVazia()) {
 
-                Aviao temp = filaP1Aterrissagem2.pegar(i);
+            if (contadorEmergencia < 2) {
 
-                if(avaliarPousoDeEmergencia(temp, filaP1Aterrissagem2, pista1, contadorEmergencia)){
-                    escolherPistaPousoEmergencia(temp, filaP1Aterrissagem2, pista1, contadorEmergencia);
-                    contadorEmergencia++;
+                while (i < filaP1Aterrissagem2.pegarTamanho()) {
+
+                    Aviao temp = filaP1Aterrissagem2.pegar(i);
+
+                    if (avaliarPousoDeEmergencia(temp, filaP1Aterrissagem2, pista1, contadorEmergencia)) {
+
+                        escolherPistaPousoEmergencia(temp, filaP1Aterrissagem2, pista1, contadorEmergencia);
+                        contadorEmergencia++;
+                    }
+                    i++;
                 }
-                i++;
             }
+
         }
-        if(contadorEmergencia < 1){
+        if (contadorEmergencia <= 1) {
             avaliarPousoOuDescolagem(pista1, filaP1Aterrissagem1, filaP1Aterrissagem2);
         }
 
-        i = 0;
-        if(!filaP2Aterrissagem1.ehVazia()){
-            while (i < filaP2Aterrissagem1.pegarTamanho()){
-                if(contadorEmergencia == 2){
-                    return;
-                }
-                Aviao temp = filaP2Aterrissagem1.pegar(i);
-                if(avaliarPousoDeEmergencia(temp, filaP2Aterrissagem1, pista2, contadorEmergencia)){
-
-                    escolherPistaPousoEmergencia(temp, filaP2Aterrissagem1, pista2, contadorEmergencia);
-                    contadorEmergencia++;
-
-                }
-                i++;
-            }
-        }
+        if (contadorEmergencia > 0) contadorEmergencia = 1;
 
         i = 0;
-            while (i < filaP2Aterrissagem2.pegarTamanho()){
+        if (!filaP2Aterrissagem1.ehVazia()) {
 
-                if(!filaP2Aterrissagem2.ehVazia()){
+            if (contadorEmergencia < 2) {
 
-                    if(contadorEmergencia == 2){
-                        return;
+                while (i < filaP2Aterrissagem1.pegarTamanho()) {
+
+                    Aviao temp = filaP2Aterrissagem1.pegar(i);
+                    if (avaliarPousoDeEmergencia(temp, filaP2Aterrissagem1, pista2, contadorEmergencia)) {
+
+                        escolherPistaPousoEmergencia(temp, filaP2Aterrissagem1, pista2, contadorEmergencia);
+                        contadorEmergencia++;
+
                     }
-
-                Aviao temp = filaP2Aterrissagem2.pegar(i);
-
-                if(avaliarPousoDeEmergencia(temp, filaP2Aterrissagem2, pista2, contadorEmergencia)){
-
-                    escolherPistaPousoEmergencia(temp, filaP2Aterrissagem2, pista2, contadorEmergencia);
-                    contadorEmergencia++;
+                    i++;
                 }
-                i++;
+
+            }
+
+        }
+
+        i = 0;
+        if(!filaP2Aterrissagem2.ehVazia()){
+
+            if(contadorEmergencia < 2){
+
+                while (i < filaP2Aterrissagem2.pegarTamanho()) {
+
+
+                    Aviao temp = filaP2Aterrissagem2.pegar(i);
+
+                    if (avaliarPousoDeEmergencia(temp, filaP2Aterrissagem2, pista2, contadorEmergencia)) {
+
+                        escolherPistaPousoEmergencia(temp, filaP2Aterrissagem2, pista2, contadorEmergencia);
+                        contadorEmergencia++;
+                    }
+                    i++;
+
+                }
             }
         }
 
-        if(contadorEmergencia < 2) {
+
+        if (contadorEmergencia < 2) {
 
             avaliarPousoOuDescolagem(pista2, filaP2Aterrissagem1, filaP2Aterrissagem2);
         }
 
-        if(contadorEmergencia == 0) {
+        if (contadorEmergencia == 0) {
 
             decolarPistaEmergencia();
         }
@@ -375,15 +386,15 @@ public class Simulador {
         int tamanhoFD = pista.getFilaDecolagem().pegarTamanho();
 
 
-        if (tamanhoFA1 > tamanhoFA2 && tamanhoFA1 > tamanhoFD) {
+        if (tamanhoFA1 >= tamanhoFA2 && tamanhoFA1 > tamanhoFD) {
 
             pousar(filaA1, pista, aeroporto.pegarNumeroPista(pista));
 
-        } else if (tamanhoFA2 > tamanhoFA1 && tamanhoFA2 > tamanhoFD) {
+        } else if (tamanhoFA2 >= tamanhoFA1 && tamanhoFA2 > tamanhoFD) {
 
             pousar(filaA2, pista, aeroporto.pegarNumeroPista(pista));
 
-        } else if(tamanhoFD >= tamanhoFA1 && tamanhoFD >= tamanhoFA2) {
+        } else if (tamanhoFD >= tamanhoFA1 && tamanhoFD >= tamanhoFA2) {
 
             decolar(pista.getFilaDecolagem(), pista, aeroporto.pegarNumeroPista(pista));
         }
@@ -392,18 +403,12 @@ public class Simulador {
 
     private boolean avaliarPousoDeEmergencia(Aviao aviao, Fila fila, Pista pista, int contadorEmergencia) {
 
-        if(aviao.getNivelCombustivel() == 0){
-
-            escolherPistaPousoEmergencia(aviao, fila, pista, contadorEmergencia);
-            return true;
-        }
-
-        return false;
+        return (aviao.getNivelCombustivel() == 0);
     }
 
-    private void escolherPistaPousoEmergencia(Aviao aviao, Fila<Aviao> fila, Pista pista, int contadorEmergencia){
+    private void escolherPistaPousoEmergencia(Aviao aviao, Fila<Aviao> fila, Pista pista, int contadorEmergencia) {
 
-        switch (contadorEmergencia){
+        switch (contadorEmergencia) {
 
             case (0):
                 pousoEmergenciaPemergencia(aviao, fila);
@@ -412,22 +417,10 @@ public class Simulador {
             case (1):
                 pousoEmergencia(aviao, fila, pista, aeroporto.pegarNumeroPista(pista));
                 break;
-
-            case (2):
-
-                if(pista.equals(pista1)){
-                    pousoEmergencia(aviao, fila, pista2, aeroporto.pegarNumeroPista(pista2));
-                    break;
-                }
-
-                if(pista.equals(pista2)){
-                    pousoEmergencia(aviao, fila, pista1, aeroporto.pegarNumeroPista(pista1));
-                    break;
-                }
         }
     }
 
-    private void pousoEmergencia(Aviao aviao, Fila<Aviao> fila, Pista pista, int numeroPista){
+    private void pousoEmergencia(Aviao aviao, Fila<Aviao> fila, Pista pista, int numeroPista) {
 
         int chegada = contadorDeRodadas - aviao.getTempoNaFila();
 
@@ -435,12 +428,14 @@ public class Simulador {
 
         pista.getListaDeAterrisagem().adicionarNoFinal(atr);
 
-        fila.poll();
+        int posicao = fila.pegarPosicao(aviao);
+
+        fila.removerPorPosicao(posicao);
 
         System.out.println("Aviao " + aviao.getIdAviao() + " Realizou um pouso de emergencia na pista " + numeroPista);
     }
 
-    private void pousoEmergenciaPemergencia(Aviao aviao, Fila<Aviao> fila){
+    private void pousoEmergenciaPemergencia(Aviao aviao, Fila<Aviao> fila) {
 
         int chegada = contadorDeRodadas - aviao.getTempoNaFila();
 
@@ -448,14 +443,16 @@ public class Simulador {
 
         pistaEmergencia.getListaAterrisagemEmergencia().adicionarNoFinal(atr);
 
-        fila.poll();
+        int posicao = fila.pegarPosicao(aviao);
+
+        fila.removerPorPosicao(posicao);
 
         System.out.println("Aviao " + aviao.getIdAviao() + " Realizou um pouso de emergencia na pista na pista de emergencia ");
     }
 
     private void decolar(Fila<Aviao> fila, Pista pista, int numeroPista) {
 
-        if(!fila.ehVazia()) {
+        if (!fila.ehVazia()) {
 
             Aviao temp = fila.pegaPrimeiro();
 
@@ -471,9 +468,9 @@ public class Simulador {
         }
     }
 
-    private void decolarPistaEmergencia(){
+    private void decolarPistaEmergencia() {
 
-        if(!filaPEmergencia.ehVazia()){
+        if (!filaPEmergencia.ehVazia()) {
 
             Aviao temp = filaPEmergencia.pegaPrimeiro();
 
@@ -489,7 +486,7 @@ public class Simulador {
         }
     }
 
-    private void pousar(Fila<Aviao> fila, Pista pista, int numeroPista){
+    private void pousar(Fila<Aviao> fila, Pista pista, int numeroPista) {
 
         Aviao temp = fila.pegaPrimeiro();
 
@@ -525,7 +522,7 @@ public class Simulador {
     private void alocarAvioesAterrissagem(List<Aviao> avioes) {
 
         System.out.println(avioes.size() + " aviões chegaram Para aterrissagem");
-        List<Fila<Aviao>> filasAterrissagem = List.of(filaP1Aterrissagem1,filaP1Aterrissagem2,filaP2Aterrissagem1,filaP2Aterrissagem2);
+        List<Fila<Aviao>> filasAterrissagem = List.of(filaP1Aterrissagem1, filaP1Aterrissagem2, filaP2Aterrissagem1, filaP2Aterrissagem2);
 
         Comparator<Fila<Aviao>> cFila = Comparator.comparingInt(Fila::pegarTamanho);
         for (Aviao a : avioes) {
@@ -618,7 +615,6 @@ public class Simulador {
         int tamanhoP2Aterrissagem2 = filaP2Aterrissagem2.pegarTamanho();
         int tamanhoP2Decolagem = filaP2Decolagem.pegarTamanho();
         int tamanhoFilaEmergencia = filaPEmergencia.pegarTamanho();
-
 
 
         System.out.println("================================================================ Pista1");

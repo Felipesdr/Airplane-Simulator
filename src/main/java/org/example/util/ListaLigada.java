@@ -198,7 +198,7 @@ public class ListaLigada <T> {
 		if (posicao == 0) {
 			removerDoComeco();
 		} 
-		else if (posicao == totalDeElementos) {
+		else if (posicao == totalDeElementos - 1) {
 			removerDoFinal();
 		} else { 
 			Celula anterior = pegarCelula(posicao - 1);
