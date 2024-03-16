@@ -157,7 +157,7 @@ public class Simulador {
         }
     }
 
-    private Double calcularMediaAterrissagem() {
+    public Double calcularMediaAterrissagem() {
 
         Double mediaAterrissagem;
         int mediaP1 = 0;
@@ -216,7 +216,7 @@ public class Simulador {
         return mediaAterrissagem;
     }
 
-    private Double calcularMediaDecolagem() {
+    public Double calcularMediaDecolagem() {
 
         double mediaDecolagem;
         int mediaP1 = 0;
@@ -275,7 +275,7 @@ public class Simulador {
         return mediaDecolagem;
     }
 
-    private void escolherProcedimento() {
+    public void escolherProcedimento() {
 
         int i = 0;
         int contadorEmergencia = 0;
@@ -380,7 +380,7 @@ public class Simulador {
 
     }
 
-    private void avaliarPousoOuDescolagem(Pista pista, Fila<Aviao> filaA1, Fila filaA2) {
+    public void avaliarPousoOuDescolagem(Pista pista, Fila<Aviao> filaA1, Fila filaA2) {
 
         int tamanhoFA1 = filaA1.pegarTamanho();
         int tamanhoFA2 = filaA2.pegarTamanho();
@@ -402,12 +402,12 @@ public class Simulador {
 
     }
 
-    private boolean avaliarPousoDeEmergencia(Aviao aviao, Fila fila, Pista pista, int contadorEmergencia) {
+    public boolean avaliarPousoDeEmergencia(Aviao aviao, Fila fila, Pista pista, int contadorEmergencia) {
 
         return (aviao.getNivelCombustivel() == 0);
     }
 
-    private void escolherPistaPousoEmergencia(Aviao aviao, Fila<Aviao> fila, Pista pista, int contadorEmergencia) {
+    public void escolherPistaPousoEmergencia(Aviao aviao, Fila<Aviao> fila, Pista pista, int contadorEmergencia) {
 
         switch (contadorEmergencia) {
 
@@ -421,7 +421,7 @@ public class Simulador {
         }
     }
 
-    private void pousoEmergencia(Aviao aviao, Fila<Aviao> fila, Pista pista, int numeroPista) {
+    public void pousoEmergencia(Aviao aviao, Fila<Aviao> fila, Pista pista, int numeroPista) {
 
         int chegada = contadorDeRodadas - aviao.getTempoNaFila();
 
@@ -438,7 +438,7 @@ public class Simulador {
         System.out.println("Aviao " + aviao.getIdAviao() + " Realizou um pouso de emergencia na pista " + numeroPista);
     }
 
-    private void pousoEmergenciaPistaemergencia(Aviao aviao, Fila<Aviao> fila) {
+    public void pousoEmergenciaPistaemergencia(Aviao aviao, Fila<Aviao> fila) {
 
         int chegada = contadorDeRodadas - aviao.getTempoNaFila();
 
@@ -455,7 +455,7 @@ public class Simulador {
         System.out.println("Aviao " + aviao.getIdAviao() + " Realizou um pouso de emergencia na pista na pista de emergencia ");
     }
 
-    private void decolar(Fila<Aviao> fila, Pista pista, int numeroPista) {
+    public void decolar(Fila<Aviao> fila, Pista pista, int numeroPista) {
 
         if (!fila.ehVazia()) {
 
@@ -473,7 +473,7 @@ public class Simulador {
         }
     }
 
-    private void decolarPistaEmergencia() {
+    public void decolarPistaEmergencia() {
 
         if (!filaPEmergencia.ehVazia()) {
 
@@ -491,7 +491,7 @@ public class Simulador {
         }
     }
 
-    private void pousar(Fila<Aviao> fila, Pista pista, int numeroPista) {
+    public void pousar(Fila<Aviao> fila, Pista pista, int numeroPista) {
 
         Aviao temp = fila.pegaPrimeiro();
 
@@ -506,7 +506,7 @@ public class Simulador {
         System.out.println("Aviao " + temp.getIdAviao() + " Pousou na pista " + numeroPista);
     }
 
-    private void aumentarTempoNaFila() {
+    public void aumentarTempoNaFila() {
 
         List<Aviao> avioesAterrissagem = aeroporto.pegarTodosAvioesAterrissagem();
 
@@ -517,14 +517,14 @@ public class Simulador {
 
     }
 
-    private void diminuirCombustivel() {
+    public void diminuirCombustivel() {
 
         List<Aviao> avioes = aeroporto.pegarTodosAvioesAterrissagem();
 
         avioes.stream().forEach(a -> a.setNivelCombustivel(a.getNivelCombustivel() - 1));
     }
 
-    private void alocarAvioesAterrissagem(List<Aviao> avioes) {
+    public void alocarAvioesAterrissagem(List<Aviao> avioes) {
 
         System.out.println(avioes.size() + " aviões chegaram Para aterrissagem");
         List<Fila<Aviao>> filasAterrissagem = List.of(filaP1Aterrissagem1, filaP1Aterrissagem2, filaP2Aterrissagem1, filaP2Aterrissagem2);
@@ -554,7 +554,7 @@ public class Simulador {
 
     }
 
-    private void alocarAvioesDecolagem(List<Aviao> avioes) {
+    public void alocarAvioesDecolagem(List<Aviao> avioes) {
 
         System.out.println(avioes.size() + " aviões chegaram para decolagem");
 
@@ -581,7 +581,7 @@ public class Simulador {
 
     }
 
-    private List<Aviao> criarAvioes() {
+    public List<Aviao> criarAvioes() {
 
         int i = 0;
         int numeroDeAvioesChegando = RandomPicker.getRandomNumber(3);
@@ -596,22 +596,22 @@ public class Simulador {
         return avioesChegando;
     }
 
-    private Pista iniciarPista() {
+    public Pista iniciarPista() {
 
         return new Pista();
     }
 
-    private PistaEmergencia iniciarPistaEmergencia() {
+    public PistaEmergencia iniciarPistaEmergencia() {
 
         return new PistaEmergencia();
     }
 
-    private Aeroporto iniciarAeroporto() {
+    public Aeroporto iniciarAeroporto() {
 
         return new Aeroporto(iniciarPista(), iniciarPista(), iniciarPistaEmergencia());
     }
 
-    private void imprimirConteudoFilas() {
+    public void imprimirConteudoFilas() {
 
         int tamanhoP1Aterrissagem1 = filaP1Aterrissagem1.pegarTamanho();
         int tamanhoP1Aterrissagem2 = filaP1Aterrissagem2.pegarTamanho();

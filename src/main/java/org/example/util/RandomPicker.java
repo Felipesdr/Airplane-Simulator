@@ -7,7 +7,7 @@ public class RandomPicker {
     private static Random random = new Random();
     public static Integer getRandomNumberNot0(Integer range){
 
-        Integer randomNumber = random.nextInt(range);
+        int randomNumber = random.nextInt(range);
 
         if(randomNumber == 0){
             randomNumber = random.nextInt(range);
@@ -15,14 +15,15 @@ public class RandomPicker {
         return randomNumber;
     }
 
-    public static Integer getRandomNumber(Integer range){
+    public static Integer getRandomNumber(Integer max){
 
-        Integer randomNumber = random.nextInt(range);
+        int min = -1;
 
-        if(randomNumber == 0){
-            randomNumber = random.nextInt(range);
-        }
-        return randomNumber;
+        max = max -1;
+
+        int random_int = (int)Math.floor(Math.random() * (max - min + 1) + min);
+
+        return random_int;
     }
 
 
