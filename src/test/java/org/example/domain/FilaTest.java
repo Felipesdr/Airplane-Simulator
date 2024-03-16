@@ -1,3 +1,5 @@
+package org.example.domain;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.example.util.Fila;

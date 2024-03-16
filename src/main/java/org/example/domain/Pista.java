@@ -39,52 +39,10 @@ public class Pista {
         return listaDeDecolagem;
     }
 
-    public Fila<Aviao> pegarMenorFilaAterrissagem(){
-
-        if(filaAterrisagem1.pegarTamanho() <= filaAterrisagem2.pegarTamanho()) {
-            return filaAterrisagem1;
-        } else {
-            return filaAterrisagem2;
-        }
-
-
-    }
-
-    public Fila<Aviao> pegarMaiorFilaAterrissagem(){
-
-        if(filaAterrisagem1.pegarTamanho() > filaAterrisagem2.pegarTamanho()) {
-            return filaAterrisagem1;
-        } else {
-            return filaAterrisagem2;
-        }
-
-
-    }
-
     public List<Fila<Aviao>> pegarFilasAterrissagem(){
 
         List<Fila<Aviao>> filasAterrissagem = List.of(filaAterrisagem1, filaAterrisagem2);
 
-
         return filasAterrissagem;
     }
-
-    public Fila<Aviao> pegarMaiorFila() {
-
-        List<Fila<Aviao>> filas = List.of(filaAterrisagem1, filaAterrisagem2, filaDecolagem);
-
-        Comparator<Fila<Aviao>> comparadorTamanhoFila = Comparator.comparingInt(Fila::pegarTamanho);
-
-        Fila<Aviao> maiorFila = filas.stream().max(comparadorTamanhoFila).get();
-
-        return maiorFila;
-
-    }
-
-
-
-
-
-
-
 }
