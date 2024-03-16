@@ -98,11 +98,27 @@ class SimuladorTest {
     }
 
     @Test
-    void decolar() {
+    void testDecolar() {
+
+        filaP1Decolagem.adicionar(aviao1);
+
+        simulador.decolar(filaP1Decolagem, pista1, aeroporto.pegarNumeroPista(pista1));
+
+        assertEquals(0, filaP1Decolagem.pegarTamanho());
+        assertEquals(1, pista1.getListaDeDecolagem().pegarTotalElementos());
+        assertEquals(1, pista1.getListaDeDecolagem().pegar(0).getAviao().getIdAviao());
     }
 
     @Test
-    void decolarPistaEmergencia() {
+    void testDecolarPistaEmergencia() {
+
+        filaPEmergencia.adicionar(aviao1);
+
+        simulador.decolarPistaEmergencia(pistaEmergencia, filaPEmergencia);
+
+        assertEquals(0, filaPEmergencia.pegarTamanho());
+        assertEquals(1, pistaEmergencia.getListaDecolagem().pegarTotalElementos());
+        assertEquals(1, pistaEmergencia.getListaDecolagem().pegar(0).getAviao().getIdAviao());
     }
 
     @Test

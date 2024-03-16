@@ -374,7 +374,7 @@ public class Simulador {
 
         if (contadorEmergencia == 0) {
 
-            decolarPistaEmergencia();
+            decolarPistaEmergencia(pistaEmergencia, filaPEmergencia);
         }
 
 
@@ -473,19 +473,19 @@ public class Simulador {
         }
     }
 
-    public void decolarPistaEmergencia() {
+    public void decolarPistaEmergencia(PistaEmergencia pe, Fila<Aviao> filaDecolagemEmergencia) {
 
-        if (!filaPEmergencia.ehVazia()) {
+        if (!filaDecolagemEmergencia.ehVazia()) {
 
-            Aviao temp = filaPEmergencia.pegaPrimeiro();
+            Aviao temp = filaDecolagemEmergencia.pegaPrimeiro();
 
             int chegada = contadorDeRodadas - temp.getTempoNaFila();
 
             Decolagem dcl = new Decolagem(chegada, contadorDeRodadas, temp);
 
-            pistaEmergencia.getListaDecolagem().adicionarNoFinal(dcl);
+            pe.getListaDecolagem().adicionarNoFinal(dcl);
 
-            filaPEmergencia.poll();
+            filaDecolagemEmergencia.poll();
 
             System.out.println("Aviao " + temp.getIdAviao() + " Decolou na pista na pista de emergencia");
         }
