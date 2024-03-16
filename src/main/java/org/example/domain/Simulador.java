@@ -13,27 +13,27 @@ public class Simulador {
 
     private final Aeroporto aeroporto;
 
-    private final Pista pista1;
-    private final Pista pista2;
-    private final PistaEmergencia pistaEmergencia;
-    private final Fila<Aviao> filaP1Aterrissagem1;
-    private final Fila<Aviao> filaP1Aterrissagem2;
-    private final Fila<Aviao> filaP1Decolagem;
-    private final Fila<Aviao> filaP2Aterrissagem1;
-    private final Fila<Aviao> filaP2Aterrissagem2;
-    private final Fila<Aviao> filaP2Decolagem;
-    private final Fila<Aviao> filaPEmergencia;
-    private final ListaLigada<Decolagem> listaDecolagemPista1;
-    private final ListaLigada<Decolagem> listaDecolagemPista2;
-    private final ListaLigada<Decolagem> listaDecolagemPistaEmergencia;
-    private final ListaLigada<Aterrisagem> listaAterrissagemPista1;
-    private final ListaLigada<Aterrisagem> listaAterrissagemPista2;
-    private final ListaLigada<Aterrisagem> listaAterrissagemPistaEmergencia;
+    private Pista pista1;
+    private Pista pista2;
+    private PistaEmergencia pistaEmergencia;
+    private Fila<Aviao> filaP1Aterrissagem1;
+    private Fila<Aviao> filaP1Aterrissagem2;
+    private Fila<Aviao> filaP1Decolagem;
+    private Fila<Aviao> filaP2Aterrissagem1;
+    private Fila<Aviao> filaP2Aterrissagem2;
+    private Fila<Aviao> filaP2Decolagem;
+    private Fila<Aviao> filaPEmergencia;
+    private ListaLigada<Decolagem> listaDecolagemPista1;
+    private ListaLigada<Decolagem> listaDecolagemPista2;
+    private ListaLigada<Decolagem> listaDecolagemPistaEmergencia;
+    private ListaLigada<Aterrisagem> listaAterrissagemPista1;
+    private ListaLigada<Aterrisagem> listaAterrissagemPista2;
+    private ListaLigada<Aterrisagem> listaAterrissagemPistaEmergencia;
     private Long idIterator = 1L;
-    private final Scanner sc = new Scanner(System.in);
+    private Scanner sc = new Scanner(System.in);
     private Integer contadorDeRodadas = 0;
     private Integer contadorAvioesCaindo = 0;
-    private final Integer contadorPousosEmergencia = 0;
+    private Integer contadorPousosEmergencia = 0;
 
     public Simulador() {
         this.aeroporto = iniciarAeroporto();
@@ -73,6 +73,7 @@ public class Simulador {
             System.out.println("Media de tempo para decolagem: " + mediaDecolagem);
             double mediaAterrissagem = calcularMediaAterrissagem();
             System.out.println("Media de tempo para aterrissagem: " + mediaAterrissagem);
+            System.out.println("Pousos de emergência: " + contadorPousosEmergencia);
             System.out.println("Queda de aviões: " + contadorAvioesCaindo);
 
             System.out.println("====================== Chegada de avioes ====================== ");
@@ -217,7 +218,7 @@ public class Simulador {
 
     private Double calcularMediaDecolagem() {
 
-        Double mediaDecolagem;
+        double mediaDecolagem;
         int mediaP1 = 0;
         int sum = 0;
         int i = 0;
@@ -411,7 +412,7 @@ public class Simulador {
         switch (contadorEmergencia) {
 
             case (0):
-                pousoEmergenciaPemergencia(aviao, fila);
+                pousoEmergenciaPistaemergencia(aviao, fila);
                 break;
 
             case (1):
@@ -430,18 +431,22 @@ public class Simulador {
 
         int posicao = fila.pegarPosicao(aviao);
 
+        contadorPousosEmergencia++;
+
         fila.removerPorPosicao(posicao);
 
         System.out.println("Aviao " + aviao.getIdAviao() + " Realizou um pouso de emergencia na pista " + numeroPista);
     }
 
-    private void pousoEmergenciaPemergencia(Aviao aviao, Fila<Aviao> fila) {
+    private void pousoEmergenciaPistaemergencia(Aviao aviao, Fila<Aviao> fila) {
 
         int chegada = contadorDeRodadas - aviao.getTempoNaFila();
 
         Aterrisagem atr = new Aterrisagem(chegada, contadorDeRodadas, aviao);
 
         pistaEmergencia.getListaAterrisagemEmergencia().adicionarNoFinal(atr);
+
+        contadorPousosEmergencia++;
 
         int posicao = fila.pegarPosicao(aviao);
 
