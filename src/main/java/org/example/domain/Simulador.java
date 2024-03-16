@@ -412,7 +412,7 @@ public class Simulador {
         switch (contadorEmergencia) {
 
             case (0):
-                pousoEmergenciaPistaemergencia(aviao, fila);
+                pousoEmergenciaPistaEmergencia(aviao, fila, pistaEmergencia);
                 break;
 
             case (1):
@@ -438,7 +438,7 @@ public class Simulador {
         System.out.println("Aviao " + aviao.getIdAviao() + " Realizou um pouso de emergencia na pista " + numeroPista);
     }
 
-    public void pousoEmergenciaPistaemergencia(Aviao aviao, Fila<Aviao> fila) {
+    public void pousoEmergenciaPistaEmergencia(Aviao aviao, Fila<Aviao> fila, PistaEmergencia pistaEmergencia) {
 
         int chegada = contadorDeRodadas - aviao.getTempoNaFila();
 

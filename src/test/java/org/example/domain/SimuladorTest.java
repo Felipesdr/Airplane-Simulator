@@ -90,11 +90,33 @@ class SimuladorTest {
     }
 
     @Test
-    void pousoEmergencia() {
+    void testPousoEmergencia() {
+
+        filaP1Aterrissagem1.adicionar(aviao1);
+        filaP1Aterrissagem2.adicionar(aviao2);
+        filaP1Aterrissagem1.adicionar(aviao3);
+
+        simulador.pousoEmergencia(aviao2, filaP1Aterrissagem1, pista1, aeroporto.pegarNumeroPista(pista1));
+
+        assertEquals(2, filaP1Aterrissagem1.pegarTamanho());
+        assertEquals(1, pista1.getListaDeAterrisagem().pegarTotalElementos());
+        assertEquals(2, pista1.getListaDeAterrisagem().pegar(0).getAviao().getIdAviao());
+        assertFalse(filaPEmergencia.contem(aviao2));
     }
 
     @Test
-    void pousoEmergenciaPistaemergencia() {
+    void testPousoEmergenciaPistaEmergencia() {
+
+        filaPEmergencia.adicionar(aviao1);
+        filaPEmergencia.adicionar(aviao2);
+        filaPEmergencia.adicionar(aviao3);
+
+        simulador.pousoEmergenciaPistaEmergencia(aviao2, filaPEmergencia, pistaEmergencia);
+
+        assertEquals(2, filaPEmergencia.pegarTamanho());
+        assertEquals(1, pistaEmergencia.getListaAterrisagemEmergencia().pegarTotalElementos());
+        assertEquals(2, pistaEmergencia.getListaAterrisagemEmergencia().pegar(0).getAviao().getIdAviao());
+        assertFalse(filaPEmergencia.contem(aviao2));
     }
 
     @Test
@@ -122,7 +144,7 @@ class SimuladorTest {
     }
 
     @Test
-    void pousar() {
+    void testPousar() {
 
         filaP1Aterrissagem1.adicionar(aviao1);
 
@@ -134,7 +156,7 @@ class SimuladorTest {
     }
 
     @Test
-    void aumentarTempoNaFila() {
+    void testAumentarTempoNaFila() {
 
         int tAviao1 = aviao1.getTempoNaFila();
         int tAviao2 = aviao2.getTempoNaFila();
@@ -150,7 +172,7 @@ class SimuladorTest {
     }
 
     @Test
-    void diminuirCombustivel() {
+    void testDiminuirCombustivel() {
 
         int cAviao1 = aviao1.getNivelCombustivel();
         int cAviao2 = aviao2.getNivelCombustivel();
@@ -166,7 +188,7 @@ class SimuladorTest {
     }
 
     @Test
-    void alocarAvioesAterrissagem() {
+    void testAlocarAvioesAterrissagem() {
 
         filaP1Aterrissagem1.adicionar(aviao1);
         filaP1Aterrissagem2.adicionar(aviao2);
