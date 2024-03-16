@@ -34,6 +34,7 @@ public class Simulador {
     private Integer contadorDeRodadas = 0;
     private Integer contadorAvioesCaindo = 0;
     private Integer contadorPousosEmergencia = 0;
+    private List<Fila<Aviao>> filas;
 
     public Simulador() {
         this.aeroporto = iniciarAeroporto();
@@ -53,6 +54,7 @@ public class Simulador {
         this.listaAterrissagemPista1 = aeroporto.getPista1().getListaDeAterrisagem();
         this.listaAterrissagemPista2 = aeroporto.getPista2().getListaDeAterrisagem();
         this.listaAterrissagemPistaEmergencia = aeroporto.getPistaEmergencia().getListaAterrisagemEmergencia();
+        this.filas = List.of(filaP1Decolagem, filaP2Decolagem, filaPEmergencia);
     }
 
 
@@ -80,7 +82,7 @@ public class Simulador {
             List<Aviao> avioesParaAterrisar = criarAvioes();
             alocarAvioesAterrissagem(avioesParaAterrisar);
             List<Aviao> avioesParaDecolar = criarAvioes();
-            alocarAvioesDecolagem(avioesParaDecolar);
+            alocarAvioesDecolagem(avioesParaDecolar, filas);
             imprimirConteudoFilas();
 
             System.out.println(" ");
@@ -554,15 +556,13 @@ public class Simulador {
 
     }
 
-    public void alocarAvioesDecolagem(List<Aviao> avioes) {
+    public void alocarAvioesDecolagem(List<Aviao> avioes, List<Fila<Aviao>> filasDecolagem) {
 
         System.out.println(avioes.size() + " aviões chegaram para decolagem");
 
         for (Aviao a : avioes) {
 
-            List<Fila<Aviao>> filas = List.of(filaP1Decolagem, filaP2Decolagem, filaPEmergencia);
-
-            Fila<Aviao> menorFila = filas.stream()
+            Fila<Aviao> menorFila = filasDecolagem.stream()
                     .min(Comparator.comparingInt(Fila::pegarTamanho))
                     .orElse(null);
 

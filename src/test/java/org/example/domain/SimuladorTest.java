@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,12 +15,34 @@ import static org.junit.jupiter.api.Assertions.*;
 class SimuladorTest {
 
     Simulador simulador;
+    private Aviao aviao1;
+    private Aviao aviao2;
+    private Aviao aviao3;
+    private Aviao aviao4;
+    List<Aviao> avioes1;
+    List<Aviao> avioes2;
+    List<Aviao> avioes3;
+    List<Aviao> avioes4;
+    Fila<Aviao> filaP1Decolagem;
+    Fila<Aviao> filaP2Decolagem;
+    Fila<Aviao> filaPEmergencia;
+    List<Fila<Aviao>> filas = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
-
+        aviao1 = new Aviao(1L);
+        aviao2 = new Aviao(2L);
+        aviao3 = new Aviao(3L);
+        aviao4 = new Aviao(4L);
         simulador = new Simulador();
-
+        avioes1 = simulador.criarAvioes();
+        avioes2 = simulador.criarAvioes();
+        avioes3 = simulador.criarAvioes();
+        avioes4 = simulador.criarAvioes();
+        filaP1Decolagem = simulador.iniciarPista().getFilaDecolagem();
+        filaP2Decolagem = simulador.iniciarPista().getFilaDecolagem();
+        filaPEmergencia = simulador.iniciarPista().getFilaDecolagem();
+        filas = List.of(filaP1Decolagem, filaP2Decolagem, filaPEmergencia);
     }
 
     @Test
@@ -84,21 +107,31 @@ class SimuladorTest {
 
     @Test
     void alocarAvioesAterrissagem() {
+
+
     }
 
     @Test
-    void alocarAvioesDecolagem() {
+    void testAlocarAvioesDecolagem() {
+
+        filaP1Decolagem.adicionar(aviao1);
+        filaP1Decolagem.adicionar(aviao2);
+        filaPEmergencia.adicionar(aviao3);
+        List<Aviao> avioesChegando = List.of(aviao4);
+
+        simulador.alocarAvioesDecolagem(avioesChegando, filas);
+
+        System.out.println(filaP1Decolagem.pegarTamanho());
+        System.out.println(filaP2Decolagem.pegarTamanho());
+        System.out.println(filaPEmergencia.pegarTamanho());
+
+        assertEquals(1, filaP2Decolagem.pegarTamanho());
     }
 
     @Test
     void testCriarAvioes() {
 
-        List<Aviao> avioes1 = simulador.criarAvioes();
-        List<Aviao> avioes2 = simulador.criarAvioes();
-        List<Aviao> avioes3 = simulador.criarAvioes();
-        List<Aviao> avioes4 = simulador.criarAvioes();
-
-        for (Aviao a : avioes1){
+        for (Aviao a : avioes1) {
 
             assertInstanceOf(Aviao.class, a);
         }
