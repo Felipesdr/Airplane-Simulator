@@ -11,29 +11,29 @@ import java.util.Scanner;
 
 public class Simulador {
 
-    private Aeroporto aeroporto;
+    private final Aeroporto aeroporto;
 
-    private Pista pista1;
-    private Pista pista2;
-    private PistaEmergencia pistaEmergencia;
-    private Fila<Aviao> filaP1Aterrissagem1;
-    private Fila<Aviao> filaP1Aterrissagem2;
-    private Fila<Aviao> filaP1Decolagem;
-    private Fila<Aviao> filaP2Aterrissagem1;
-    private Fila<Aviao> filaP2Aterrissagem2;
-    private Fila<Aviao> filaP2Decolagem;
-    private Fila<Aviao> filaPEmergencia;
-    private ListaLigada<Decolagem> listaDecolagemPista1;
-    private ListaLigada<Decolagem> listaDecolagemPista2;
-    private ListaLigada<Decolagem> listaDecolagemPistaEmergencia;
-    private ListaLigada<Aterrisagem> listaAterrissagemPista1;
-    private ListaLigada<Aterrisagem> listaAterrissagemPista2;
-    private ListaLigada<Aterrisagem> listaAterrissagemPistaEmergencia;
+    private final Pista pista1;
+    private final Pista pista2;
+    private final PistaEmergencia pistaEmergencia;
+    private final Fila<Aviao> filaP1Aterrissagem1;
+    private final Fila<Aviao> filaP1Aterrissagem2;
+    private final Fila<Aviao> filaP1Decolagem;
+    private final Fila<Aviao> filaP2Aterrissagem1;
+    private final Fila<Aviao> filaP2Aterrissagem2;
+    private final Fila<Aviao> filaP2Decolagem;
+    private final Fila<Aviao> filaPEmergencia;
+    private final ListaLigada<Decolagem> listaDecolagemPista1;
+    private final ListaLigada<Decolagem> listaDecolagemPista2;
+    private final ListaLigada<Decolagem> listaDecolagemPistaEmergencia;
+    private final ListaLigada<Aterrisagem> listaAterrissagemPista1;
+    private final ListaLigada<Aterrisagem> listaAterrissagemPista2;
+    private final ListaLigada<Aterrisagem> listaAterrissagemPistaEmergencia;
     private Long idIterator = 1L;
-    private Scanner sc = new Scanner(System.in);
+    private final Scanner sc = new Scanner(System.in);
     private Integer contadorDeRodadas = 0;
     private Integer contadorAvioesCaindo = 0;
-    private Integer contadorPousosEmergencia = 0;
+    private final Integer contadorPousosEmergencia = 0;
 
     public Simulador() {
         this.aeroporto = iniciarAeroporto();
@@ -179,9 +179,9 @@ public class Simulador {
         int mediaP2 = 0;
         sum = 0;
         i = 0;
-        while (i < listaAterrissagemPista1.pegarTotalElementos() && !listaAterrissagemPista1.ehVazia()) {
+        while (i < listaAterrissagemPista2.pegarTotalElementos() && !listaAterrissagemPista2.ehVazia()) {
 
-            Aterrisagem temp = listaAterrissagemPista1.pegar(i);
+            Aterrisagem temp = listaAterrissagemPista2.pegar(i);
 
             int esperaDecolagem = temp.getSaida() - temp.getChegada();
 
@@ -189,16 +189,16 @@ public class Simulador {
 
             i++;
         }
-        if (listaAterrissagemPista1.pegarTotalElementos() > 0) {
-            mediaP2 = sum / listaAterrissagemPista1.pegarTotalElementos();
+        if (listaAterrissagemPista2.pegarTotalElementos() > 0) {
+            mediaP2 = sum / listaAterrissagemPista2.pegarTotalElementos();
         }
 
         int mediaPE = 0;
         sum = 0;
         i = 0;
-        while (i < listaAterrissagemPista1.pegarTotalElementos() && !listaAterrissagemPista1.ehVazia()) {
+        while (i < listaAterrissagemPistaEmergencia.pegarTotalElementos() && !listaAterrissagemPistaEmergencia.ehVazia()) {
 
-            Aterrisagem temp = listaAterrissagemPista1.pegar(i);
+            Aterrisagem temp = listaAterrissagemPistaEmergencia.pegar(i);
 
             int esperaDecolagem = temp.getSaida() - temp.getChegada();
 
@@ -206,8 +206,8 @@ public class Simulador {
 
             i++;
         }
-        if (listaAterrissagemPista1.pegarTotalElementos() > 0) {
-            mediaPE = sum / listaAterrissagemPista1.pegarTotalElementos();
+        if (listaAterrissagemPistaEmergencia.pegarTotalElementos() > 0) {
+            mediaPE = sum / listaAterrissagemPistaEmergencia.pegarTotalElementos();
         }
 
         mediaAterrissagem = (double) ((mediaP1 + mediaP2 + mediaPE) / 3);
@@ -648,7 +648,7 @@ public class Simulador {
 
             while (j < tamanhoP1Aterrissagem2) {
 
-                Aviao temp = (Aviao) filaP1Aterrissagem2.pegar(j);
+                Aviao temp = filaP1Aterrissagem2.pegar(j);
 
                 System.out.println("Aviao "
                         + temp.getIdAviao()
@@ -670,7 +670,7 @@ public class Simulador {
 
             while (j < tamanhoP1Decolagem) {
 
-                Aviao temp = (Aviao) filaP1Decolagem.pegar(j);
+                Aviao temp = filaP1Decolagem.pegar(j);
 
                 System.out.println("Aviao "
                         + temp.getIdAviao()
@@ -694,7 +694,7 @@ public class Simulador {
 
             while (j < tamanhoP2Aterrissagem1) {
 
-                Aviao temp = (Aviao) filaP2Aterrissagem1.pegar(j);
+                Aviao temp = filaP2Aterrissagem1.pegar(j);
 
                 System.out.println("Aviao "
                         + temp.getIdAviao()
@@ -716,7 +716,7 @@ public class Simulador {
 
             while (j < tamanhoP2Aterrissagem2) {
 
-                Aviao temp = (Aviao) filaP2Aterrissagem2.pegar(j);
+                Aviao temp = filaP2Aterrissagem2.pegar(j);
 
                 System.out.println("Aviao "
                         + temp.getIdAviao()
@@ -738,7 +738,7 @@ public class Simulador {
 
             while (j < tamanhoP2Decolagem) {
 
-                Aviao temp = (Aviao) filaP2Decolagem.pegar(j);
+                Aviao temp = filaP2Decolagem.pegar(j);
 
                 System.out.println("Aviao "
                         + temp.getIdAviao()
@@ -752,7 +752,7 @@ public class Simulador {
             }
         }
 
-        System.out.println("");
+        System.out.println();
         System.out.println("==================================== Pista de emergência");
         System.out.println("[Decolagem] -> " + tamanhoFilaEmergencia + " aviões na fila");
         j = 0;
@@ -761,7 +761,7 @@ public class Simulador {
 
             while (j < tamanhoFilaEmergencia) {
 
-                Aviao temp = (Aviao) filaPEmergencia.pegar(j);
+                Aviao temp = filaPEmergencia.pegar(j);
 
                 System.out.println("Aviao "
                         + temp.getIdAviao()
